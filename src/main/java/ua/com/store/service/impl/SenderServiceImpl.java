@@ -1,0 +1,198 @@
+package ua.com.store.service.impl;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import ua.com.store.model.Order;
+import ua.com.store.model.User;
+import ua.com.store.service.SenderService;
+import ua.com.store.service.UserService;
+
+import javax.mail.*;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeUtility;
+import java.io.UnsupportedEncodingException;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
+import java.util.Properties;
+
+/**
+ * Класс сервисного слоя реализует методы интерфейса {@link SenderService}
+ * для работы с электронной почтой. Также реализует интерфейс {@link Runnable},
+ * то есть можно отправлять сообщения в отдельном потоке.
+ */
+@Service
+public class SenderServiceImpl implements SenderService, Runnable {
+    /**
+     * Объект сервиса для работы с пользователями.
+     */
+    private UserService userService;
+
+    /**
+     * Стандартная кодировка сообщений.
+     */
+    private static final String CHARSET = "UTF-8";
+
+    /**
+     * Стандартная кодировка сообщений.
+     */
+    private static final String ENCODING = "Q";
+
+    /**
+     * Администратор сайта, от имени которого будут отправлятся
+     * сообщения менеджерам.
+     */
+    private User admin;
+
+    /**
+     * Список менеджеров, которым будет приходить сообщение о заказе.
+     */
+    private List<User> managers;
+
+    /**
+     * Заказ, информация о котором будет приходить на почту менеджерам.
+     */
+    private Order order;
+
+    /**
+     * Конструктор для инициализации основных переменных сервиса.
+     * Помечаный аннотацией @Autowired, которая позволит Spring автоматически инициализировать объект.
+     */
+    @Autowired
+    public SenderServiceImpl(UserService userService) {
+        this.userService = userService;
+    }
+
+    /**
+     * Отсылает информацию о заказе менеджерам на электронную почту.
+     * Запускает отдельный поток.
+     */
+    @Override
+    public void send(Order order) {
+        this.order = order;
+        new Thread(this).start();
+    }
+
+    /**
+     * Запускает текущий поток. Переопределенный метод класса {@link Thread}.
+     */
+    @Override
+    public void run() {
+        if (order != null) {
+            admin = userService.getMainAdministrator();
+            managers = userService.getManagers();
+            Collections.shuffle(managers);
+
+            if (admin != null && !managers.isEmpty()) {
+                choosePropertiesAndSend();
+            }
+        }
+    }
+
+    private void choosePropertiesAndSend() {
+        Properties properties;
+        String subject = "Store || New Order " + order.getNumber();
+        String text = order.toString();
+        try {
+            for (User manager : managers) {
+                Thread.sleep(10000);
+                try {
+                    try {
+                        properties = getTLSProperties();
+                        sendMessage(properties, manager.getEmail(), subject, text);
+                    } catch (MessagingException ex) {
+                        ex.printStackTrace();
+
+                        properties = getSSLProperties();
+                        sendMessage(properties, manager.getEmail(), subject, text);
+                    }
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+        } catch (InterruptedException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    /**
+     * Возвращает настройки протокола TLS (Transport Layer Security) для отправки сообщения.
+     */
+    @Override
+    public Properties getTLSProperties() {
+        Properties properties = new Properties();
+        properties.put("mail.smtp.auth", "true");
+        properties.put("mail.smtp.starttls.enable", "true");
+        properties.put("mail.smtp.host", "smtp.gmail.com");
+        properties.put("mail.smtp.port", "587");
+        return properties;
+    }
+
+    /**
+     * Возвращает настройки протокола SSL (Secure Sockets Layer) для отправки сообщения.
+     */
+    @Override
+    public Properties getSSLProperties() {
+        Properties properties = new Properties();
+        properties.put("mail.smtp.host", "smtp.gmail.com");
+        properties.put("mail.smtp.socketFactory.port", "465");
+        properties.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+        properties.put("mail.smtp.auth", "true");
+        properties.put("mail.smtp.port", "465");
+        return properties;
+    }
+
+    /**
+     * Отправляет сообщение по заданым параметрам.
+     *
+     * @param properties Настройки протокола для сессии.
+     * @param toEmail    Адрес электронной почты, на который будет отправлено сообщение.
+     * @param subject    Тема сообщения.
+     * @param text       Текст сообщения.
+     * @throws MessagingException           Исключение класса InternetAddress.
+     * @throws UnsupportedEncodingException Исключение кодировки метдом MimeUtility.encodeText().
+     */
+    @Override
+    public void sendMessage(Properties properties, String toEmail, String subject, String text) throws MessagingException, UnsupportedEncodingException {
+        Session session = Session.getDefaultInstance(properties, new Authenticator() {
+            @Override
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(admin.getEmail(), admin.getPassword());
+            }
+        });
+
+        Message message = new MimeMessage(session);
+        message.setFrom(new InternetAddress("maxim.beseda@gmail.com"));
+        message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toEmail));
+        message.setSubject(MimeUtility.encodeText(subject, CHARSET, ENCODING));
+        message.setContent(text, "text/plain;charset=" + CHARSET);
+        message.setSentDate(new Date());
+
+        Transport.send(message);
+    }
+
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
+    }
+
+    public User getAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(User admin) {
+        this.admin = admin;
+    }
+
+    public List<User> getManagers() {
+        return managers;
+    }
+
+    public void setManagers(List<User> managers) {
+        this.managers = managers;
+    }
+}

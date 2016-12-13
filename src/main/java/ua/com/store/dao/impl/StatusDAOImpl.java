@@ -1,0 +1,72 @@
+package ua.com.store.dao.impl;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+import ua.com.store.dao.StatusDAO;
+import ua.com.store.enums.StatusEnum;
+import ua.com.store.model.Status;
+import ua.com.store.repository.StatusRepository;
+
+/**
+ * Класс реализует методы доступа объектов класса {@link Status}
+ * в базе данных интерфейса {@link StatusDAO}, наследует родительский
+ * абстрактный класс {@link DataDAOImpl}, в котором реализованы
+ * основные методы. Для работы методы используют объект-репозиторий
+ * интерфейса {@link StatusRepository}.
+ * Класс помечена аннотацией @Repository (наследник Spring'овой аннотации @Component).
+ * Это позволяет Spring автоматически зарегестрировать компонент в своём контексте
+ * для последующей инъекции.
+ */
+@Repository
+public class StatusDAOImpl extends DataDAOImpl<Status> implements StatusDAO {
+    /**
+     * Реализация репозитория {@link StatusRepository} для работы статусов заказов с базой данных.
+     */
+    private StatusRepository repository;
+
+    /**
+     * Конструктор для инициализации основных переменных.
+     * Помечаный аннотацией @Autowired, которая позволит Spring
+     * автоматически инициализировать объект.
+     */
+    @Autowired
+    public StatusDAOImpl(StatusRepository repository) {
+        super(repository);
+        this.repository = repository;
+    }
+
+    /**
+     * Добавляет статус в базу даных по названию, которое может принимать
+     * одно из значений перечисления {@link StatusEnum}.
+     */
+    @Override
+    public void add(StatusEnum title, String description) {
+        repository.save(new Status(title, description));
+    }
+
+    /**
+     * Возвращает статус из базы даных по названию, которое может принимать
+     * одно из значений перечисления {@link StatusEnum}.
+     */
+    @Override
+    public Status get(StatusEnum title) {
+        return repository.findByTitle(title);
+    }
+
+    /**
+     * Возвращает из базы даных статус по-умолчанию.
+     */
+    @Override
+    public Status getDefault() {
+        return repository.findOne((long) 1);
+    }
+
+    /**
+     * Удаляет статус из базы даных по названию, которое может принимать
+     * одно из значений перечисления {@link StatusEnum}.
+     */
+    @Override
+    public void remove(StatusEnum title) {
+        repository.deleteByTitle(title);
+    }
+}
