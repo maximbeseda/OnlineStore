@@ -27,6 +27,8 @@ import javax.sql.DataSource;
  * с БД в памяти, используя JPA;
  * аннотацией @ComponentScan - указываем фреймворку Spring, что компоненты надо искать внутри
  * пакета "ua.com.store.model".
+ *
+ * @author Максим Беседа
  */
 @Configuration
 @EnableTransactionManagement
@@ -34,39 +36,29 @@ import javax.sql.DataSource;
 @ComponentScan(basePackages = "ua.com.store.model")
 public class RootConfig {
 
-    /**
-     * Путь к базе данных.
-     */
+    /** Путь к базе данных. */
     private static final String DATABASE_URL = "jdbc:mysql://localhost:3306/storedb?autoReconnect=true&useSSL=false&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT";
 
-    /**
-     * Драйвер для подключение к базе данных.
-     */
+    /** Драйвер для подключения к базе данных. */
     private static final String DATABASE_DRIVER = "com.mysql.cj.jdbc.Driver";
 
-    /**
-     * Логин для подключение к базе данных.
-     */
+    /** Логин для подключения к базе данных. */
     private static final String DATABASE_USERNAME = "maxim_beseda";
 
-    /**
-     * Пароль для подключение к базе данных.
-     */
+    /**Пароль для подключения к базе данных. */
     private static final String DATABASE_PASSWORD = "1234";
 
-    /**
-     * Диалект.
-     */
+    /** Диалект. */
     private static final String DATABASE_DIALECT = "org.hibernate.dialect.MySQLDialect";
 
-    /**
-     * Пакет сканирования для фабрики EntityManager.
-     */
+    /** Пакет сканирования для фабрики EntityManager. */
     private static final String PACKAGE_TO_SCAN = "ua.com.store.model";
 
     /**
      * Возвращает объект класса DataSource с настройками подключения к базе данных.
      * Нужен для получения физического соединения с базой данных.
+     *
+     * @return Объект класса DataSource - настройки для базы данных.
      */
     @Bean
     public DataSource dataSource() {
@@ -82,6 +74,8 @@ public class RootConfig {
 
     /**
      * Возвращает настройки адаптера (JPA provider) для подключения к базе данных.
+     *
+     * @return Объект класса HibernateJpaVendorAdapter - адаптера для подключения к базе данных.
      */
     @Bean
     public JpaVendorAdapter jpaVendorAdapter() {
@@ -94,6 +88,10 @@ public class RootConfig {
 
     /**
      * Создает фабрику EntityManager, может быть передана в DAO, JPA с помощью инъекции зависимостей.
+     *
+     * @param dataSource       Объект класса DataSource с настройками подключения к базе данных.
+     * @param jpaVendorAdapter Реализация интерфейса JpaVendorAdapter - адаптера для подключения к базе данных.
+     * @return Объект класса LocalContainerEntityManagerFactoryBean.
      */
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource, JpaVendorAdapter jpaVendorAdapter) {
@@ -107,6 +105,9 @@ public class RootConfig {
     /**
      * Возвращает менеджера транзакций, который  подходит для приложений, использующих единую
      * JPA EntityManagerFactory для транзакционного доступа к данным.
+     *
+     * @param factory Реализация интерфейса EntityManagerFactory.
+     * @return Объект класса JpaTransactionManager с входящей фабрикой ентети менеджера factory.
      */
     @Bean
     public JpaTransactionManager transactionManager(EntityManagerFactory factory) {
@@ -115,6 +116,8 @@ public class RootConfig {
 
     /**
      * Переводит (перехватывает) любые JPA или Hibernate исключения в Spring исключения.
+     *
+     * @return Реализация интерфейса PersistenceExceptionTranslationPostProcessor.
      */
     @Bean
     public BeanPostProcessor persistenceTranslation() {
@@ -124,6 +127,8 @@ public class RootConfig {
     /**
      * Возвращает объект класса CommonsMultipartResolver, который сохраняет временные файлы
      * во временный каталог сервлет контейнера.
+     *
+     * @return Объект класса CommonsMultipartResolver для временного сохранения файлов.
      */
     @Bean
     public CommonsMultipartResolver multipartResolver() {

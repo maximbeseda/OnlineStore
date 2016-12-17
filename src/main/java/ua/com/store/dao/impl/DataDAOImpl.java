@@ -15,6 +15,17 @@ import java.util.List;
  * используют объект-репозиторий интерфейса {@link MainRepository},
  * возвращаемый абстрактным методом repository, реализацию которого каждый наследник берет
  * на себя.
+ *
+ * @author Максим Беседа
+ * @param <T> Класс-наследник класса {@link Model}.
+ * @see CategoryDAOImpl
+ * @see PhotoDAOImpl
+ * @see ProductDAOImpl
+ * @see RoleDAOImpl
+ * @see SalePositionDAOImpl
+ * @see StatusDAOImpl
+ * @see DataDAOImpl
+ * @see DataDAO
  */
 public abstract class DataDAOImpl<T extends Model> implements DataDAO<T> {
     /**
@@ -24,6 +35,8 @@ public abstract class DataDAOImpl<T extends Model> implements DataDAO<T> {
 
     /**
      * Конструктор для инициализации основных переменных.
+     *
+     * @param repository Реализация репозитория {@link MainRepository} для работы категорий с базой данных.
      */
     public DataDAOImpl(MainRepository<T, Long> repository) {
         super();
@@ -32,6 +45,8 @@ public abstract class DataDAOImpl<T extends Model> implements DataDAO<T> {
 
     /**
      * Добавление модели в базу данных.
+     *
+     * @param model Модель для добавления.
      */
     @Override
     public void add(T model) {
@@ -40,6 +55,8 @@ public abstract class DataDAOImpl<T extends Model> implements DataDAO<T> {
 
     /**
      * Добавление коллекции моделей в базу данных.
+     *
+     * @param models Коллекция моделей для добавления.
      */
     @Override
     public void add(Collection<T> models) {
@@ -48,6 +65,8 @@ public abstract class DataDAOImpl<T extends Model> implements DataDAO<T> {
 
     /**
      * Обновление существующей модели в базе данных.
+     *
+     * @param model Обновленная модель.
      */
     @Override
     public void update(T model) {
@@ -56,6 +75,9 @@ public abstract class DataDAOImpl<T extends Model> implements DataDAO<T> {
 
     /**
      * Получение модели по уникальному коду id в базе данных.
+     *
+     * @param id Уникальный код модели.
+     * @return Объект класса {@link Model} -  модель с кодом id.
      */
     @Override
     public T get(Long id) {
@@ -64,6 +86,8 @@ public abstract class DataDAOImpl<T extends Model> implements DataDAO<T> {
 
     /**
      * Получение всех моделей из базы данных.
+     *
+     * @return Объект типа List - список всех моделей.
      */
     @Override
     public List<T> getAll() {
@@ -72,6 +96,8 @@ public abstract class DataDAOImpl<T extends Model> implements DataDAO<T> {
 
     /**
      * Удаление модели из базы данных.
+     *
+     * @param model Модель для удаления.
      */
     @Override
     public void remove(T model) {
@@ -80,6 +106,8 @@ public abstract class DataDAOImpl<T extends Model> implements DataDAO<T> {
 
     /**
      * Удаление модели из базы данных по уникальному коду.
+     *
+     * @param id Уникальный код модели.
      */
     @Override
     public void remove(Long id) {
@@ -88,6 +116,8 @@ public abstract class DataDAOImpl<T extends Model> implements DataDAO<T> {
 
     /**
      * Удаление коллекции моделей из базы данных.
+     *
+     * @param models Коллекция моделей для удаления.
      */
     @Override
     public void remove(Collection<T> models) {

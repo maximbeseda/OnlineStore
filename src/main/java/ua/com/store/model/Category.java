@@ -9,30 +9,27 @@ import java.util.List;
  * Категория описывает набор товаров, которые имеют общие характеристики.
  * Аннотация @Entity говорит о том что объекты этого класса будет обрабатываться hibernate.
  * Аннотация @Table(name = "categories") указывает на таблицу "categories", в которой будут храниться объекты.
+ *
+ * @author Максим Беседа
+ * @see Product
+ * @see Photo
  */
 @Entity
 @Table(name = "Categories")
 public class Category extends Model {
-    /**
-     * Номер версии класса необходимый для десериализации и сериализации.
-     */
+
+    /** Номер версии класса необходимый для десериализации и сериализации. */
     private static final long serialVersionUID = 1L;
 
-    /**
-     * Название категории. Значение поля сохраняется в колонке "title". Не может быть null.
-     */
+    /** Название категории. Значение поля сохраняется в колонке "title". Не может быть null. */
     @Column(name = "title", nullable = false)
     private String title;
 
-    /**
-     * URL категории. Значение поля сохраняется в колонке "url". Не может быть null.
-     */
+    /** URL категории. Значение поля сохраняется в колонке "url". Не может быть null. */
     @Column(name = "url", nullable = false)
     private String url;
 
-    /**
-     * Описание категории. Значение поля сохраняется в колонке "description".
-     */
+    /** Описание категории. Значение поля сохраняется в колонке "description". */
     @Column(name = "description")
     private String description;
 
@@ -66,6 +63,14 @@ public class Category extends Model {
         this.description = "";
     }
 
+    /**
+     * Конструктор для инициализации основных переменных категории.
+     *
+     * @param title       Название категории.
+     * @param url         URL категории.
+     * @param description Описание категории.
+     * @param photo       Изображение категории.
+     */
     public Category(String title, String url, String description, Photo photo) {
         super();
         this.title = title;
@@ -74,6 +79,12 @@ public class Category extends Model {
         this.photo = photo;
     }
 
+    /**
+     * Возвращает описание категории.
+     * Переопределенный метод родительского класса {@link Object}.
+     *
+     * @return Значение типа {@link String} - строка описание категории (название, URL, описание).
+     */
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -86,6 +97,8 @@ public class Category extends Model {
     /**
      * Генерирует строку для конечного сравнения категорий в методе equals() родительского класса.
      * Переопределенный метод родительского класса {@link Model}.
+     *
+     * @return Значение типа {@link String} - название + URL категории.
      */
     @Override
     public String toEquals() {
@@ -98,6 +111,11 @@ public class Category extends Model {
 
     /**
      * Инициализация полей категории.
+     *
+     * @param title       Название категории.
+     * @param url         URL категории.
+     * @param description Описание категории.
+     * @param photo       Изображение категории.
      */
     public void initialize(String title, String url, String description, Photo photo) {
         setTitle(title);
@@ -108,6 +126,8 @@ public class Category extends Model {
 
     /**
      * Добавляет товар в список текущей категории.
+     *
+     * @param product Товар, который будет добавлен в текущую категорию.
      */
     public void addProduct(Product product) {
         products.add(product);
@@ -115,6 +135,8 @@ public class Category extends Model {
 
     /**
      * Добавляет список товаров в список текущей категории.
+     *
+     * @param products Список товаров, которые будут добавлены в текущую категорию.
      */
     public void addProducts(List<Product> products) {
         this.products.addAll(products);
@@ -122,6 +144,8 @@ public class Category extends Model {
 
     /**
      * Удаляет товар из списка текущей категории.
+     *
+     * @param product Товар, который будет удален из данной категории.
      */
     public void removeProduct(Product product) {
         products.remove(product);
@@ -129,6 +153,8 @@ public class Category extends Model {
 
     /**
      * Удаляет список товаров из списка текущей категории.
+     *
+     * @param products Список товаров, которые будут удалены из текущей категории.
      */
     public void removeProducts(List<Product> products) {
         this.products.removeAll(products);

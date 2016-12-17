@@ -25,6 +25,12 @@ import java.io.OutputStream;
  * Методы класса помечены аннотацией @Transactional - перед исполнением метода помеченного
  * данной аннотацией начинается транзакция, после выполнения метода транзакция коммитится,
  * при выбрасывании RuntimeException откатывается.
+ *
+ * @author Максим Беседа
+ * @see MainServiceImpl
+ * @see PhotoService
+ * @see Photo
+ * @see PhotoDAO
  */
 @Service
 public class PhotoServiceImpl extends MainServiceImpl<Photo> implements PhotoService {
@@ -43,6 +49,8 @@ public class PhotoServiceImpl extends MainServiceImpl<Photo> implements PhotoSer
      * Конструктор для инициализации основных переменных сервиса.
      * Помечаный аннотацией @Autowired, которая позволит Spring
      * автоматически инициализировать объект.
+     *
+     * @param dao Реализация интерфейса {@link PhotoDAO} для работы изображений с базой данных.
      */
     @Autowired
     public PhotoServiceImpl(PhotoDAO dao) {
@@ -94,6 +102,8 @@ public class PhotoServiceImpl extends MainServiceImpl<Photo> implements PhotoSer
 
     /**
      * Сохраняет файл в файловой системе.
+     *
+     * @param photo Файл для сохранения.
      */
     @Override
     @Transactional
@@ -109,6 +119,8 @@ public class PhotoServiceImpl extends MainServiceImpl<Photo> implements PhotoSer
 
     /**
      * Удаляет файл по url.
+     *
+     * @param url URL файла для удаления.
      */
     @Override
     @Transactional

@@ -10,13 +10,16 @@ import java.util.List;
  * Класс описывает сущность "Роль пользвателей", наследует класс {@link Model}.
  * Аннотация @Entity говорит о том что объекты этого класса будет обрабатываться hibernate.
  * Аннотация @Table(name = "roles") указывает на таблицу "roles", в которой будут храниться объекты.
+ *
+ * @author Максим Беседа
+ * @see RoleEnum
+ * @see User
  */
 @Entity
 @Table(name = "Roles")
 public class Role extends Model {
-    /**
-     * Номер версии класса необходимый для десериализации и сериализации.
-     */
+
+    /** Номер версии класса необходимый для десериализации и сериализации. */
     private static final long serialVersionUID = 1L;
 
     /**
@@ -27,9 +30,7 @@ public class Role extends Model {
     @Enumerated(EnumType.STRING)
     private RoleEnum title;
 
-    /**
-     * Описание роли. Значение поля сохраняется в колонке "description".
-     */
+    /** Описание роли. Значение поля сохраняется в колонке "description". */
     @Column(name = "description", nullable = false)
     private String description;
 
@@ -48,12 +49,24 @@ public class Role extends Model {
         description = "";
     }
 
+    /**
+     * Конструктор для инициализации основных переменных роли.
+     *
+     * @param title       Название роли, может принимать одно из значений перечисления {@link RoleEnum}.
+     * @param description Описание роли.
+     */
     public Role(RoleEnum title, String description) {
         super();
         this.title = title;
         this.description = description;
     }
 
+    /**
+     * Возвращает описание роли.
+     * Переопределенный метод родительского класса {@link Object}.
+     *
+     * @return Значение типа {@link String} - строка описание роли (имя, описание).
+     */
     @Override
     public String toString() {
         return "Title: " + title.name() + "\nDescription: " + description;
@@ -62,6 +75,8 @@ public class Role extends Model {
     /**
      * Генерирует строку для конечного сравнения роли в методе equals() родительского класса.
      * Переопределенный метод родительского класса {@link Model}.
+     *
+     * @return Значение типа {@link String} - название роли.
      */
     public String toEquals() {
         return title.name();
@@ -69,6 +84,8 @@ public class Role extends Model {
 
     /**
      * Добавляет пользователя в список текущей роли.
+     *
+     * @param user Пользователь, который имеет текущую роль.
      */
     public void addUser(User user) {
         users.add(user);
@@ -76,6 +93,8 @@ public class Role extends Model {
 
     /**
      * Добавляет список пользователей в список пользователей users.
+     *
+     * @param users Список пользователей, которые будут иметь текущую роль.
      */
     public void addUsers(List<User> users) {
         this.users.addAll(users);
@@ -83,6 +102,8 @@ public class Role extends Model {
 
     /**
      * Удаляет пользователя из списка текущей роли.
+     *
+     * @param user Пользователь, у которого будет удалена текущая роль.
      */
     public void removeUser(User user) {
         users.remove(user);
@@ -90,6 +111,8 @@ public class Role extends Model {
 
     /**
      * Метод удаляет список пользователей из списка users.
+     *
+     * @param users Список пользователей,  у которых будет удалена текущая роль.
      */
     public void removeUsers(List<User> users) {
         this.users.removeAll(users);

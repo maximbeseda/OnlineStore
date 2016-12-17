@@ -24,6 +24,12 @@ import java.util.List;
  * Методы класса помечены аннотацией @Transactional - перед исполнением метода помеченного
  * данной аннотацией начинается транзакция, после выполнения метода транзакция коммитится,
  * при выбрасывании RuntimeException откатывается.
+ *
+ * @author Максим Беседа
+ * @see MainServiceImpl
+ * @see RoleService
+ * @see Role
+ * @see RoleDAO
  */
 @Service
 public class RoleServiceImpl extends MainServiceImpl<Role> implements RoleService {
@@ -141,6 +147,8 @@ public class RoleServiceImpl extends MainServiceImpl<Role> implements RoleServic
 
     /**
      * Возвращает список ролей персонала сайта. Режим только для чтения.
+     *
+     * @return Объект типа {@link List} - список ролей персонала.
      */
     @Override
     @Transactional(readOnly = true)

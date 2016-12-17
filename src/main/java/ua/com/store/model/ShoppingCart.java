@@ -15,29 +15,41 @@ import java.util.List;
  * Реализует интерфейс Serializable, может быть сериализован.
  * Помечен аннотациями @Component указывает, что клас является компонентом фреймворка Spring;
  * и @Scope - область видимости бина "session" (один экземпляр бина для каждой сессии).
+ *
+ * @author Максим Беседа
+ * @see SalePosition
  */
 @Component
 @Scope(value = WebApplicationContext.SCOPE_SESSION, proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class ShoppingCart implements Serializable {
-    /**
-     * Номер версии класса необходимый для десериализации и сериализации.
-     */
+
+    /** Номер версии класса необходимый для десериализации и сериализации. */
     private static final long serialVersionUID = 1L;
 
-    /**
-     * Список торговых позиций, которые сделал клиент, но пока не оформил заказ.
-     */
+    /** Список торговых позиций, которые сделал клиент, но пока не оформил заказ. */
     private List<SalePosition> salePositions = new ArrayList<>();
 
     public ShoppingCart() {
         super();
     }
 
+    /**
+     * Конструктор для инициализации основных переменных корзины.
+     *
+     * @param salePositions Торговые позиции, сделаные клиентом.
+     */
     public ShoppingCart(List<SalePosition> salePositions) {
         super();
         this.salePositions = salePositions;
     }
 
+    /**
+     * Возвращает описание корзины.
+     * Переопределенный метод родительского класса {@link Object}.
+     *
+     * @return Значение типа {@link String} - строка описание корзины
+     * (информация о торговых позициях, цена корзины).
+     */
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("Shoping Cart: ");
@@ -57,6 +69,8 @@ public class ShoppingCart implements Serializable {
 
     /**
      * Добавляет торговую позицию в список корзины.
+     *
+     * @param salePosition Торговая позиция, которая будет добавлена в корзину.
      */
     public void addSalePosition(SalePosition salePosition) {
         if (salePosition != null) {
@@ -71,6 +85,8 @@ public class ShoppingCart implements Serializable {
 
     /**
      * Добавляет список торговых позиций в список корзины.
+     *
+     * @param salePositions Список торговых позиций, которые будут добавлены в корзину.
      */
     public void addSalePositions(List<SalePosition> salePositions) {
         for (SalePosition salePosition : salePositions) {
@@ -80,6 +96,8 @@ public class ShoppingCart implements Serializable {
 
     /**
      * Удаляет торговую позицию из корзины.
+     *
+     * @param salePosition Торговая позиция для удаления из корзины.
      */
     public void removeSalePosition(SalePosition salePosition) {
         salePositions.remove(salePosition);
@@ -87,6 +105,8 @@ public class ShoppingCart implements Serializable {
 
     /**
      * Удаляет список торговых позицый из корзины.
+     *
+     * @param salePositions Торговые позиции для удаления из корзины.
      */
     public void removeSalePositions(List<SalePosition> salePositions) {
         this.salePositions.removeAll(salePositions);
@@ -99,16 +119,29 @@ public class ShoppingCart implements Serializable {
         salePositions.clear();
     }
 
+    /**
+     * Возвращает список всех торговых позиций в корзине.
+     * Метод конвертирует список торговых позиций в корзине в список только для чтений и возвращает его.
+     *
+     * @return Объект типа {@link List} - список торговых позиций только для чтения или пустой список.
+     */
     public List<SalePosition> getSalePositions() {
         return salePositions == null || salePositions.isEmpty() ? Collections.EMPTY_LIST : Collections.unmodifiableList(salePositions);
     }
 
+    /**
+     * Устанавливает список торговых позиций.
+     *
+     * @param salePositions Список торговых позиций .
+     */
     public void setSalePositions(List<SalePosition> salePositions) {
         this.salePositions = salePositions;
     }
 
     /**
      * Возвращает цену корзины - цена всех торговых позиций.
+     *
+     * @return Значение типа double - цена корзины.
      */
     public double getPrice() {
         double sum = 0;
@@ -120,6 +153,8 @@ public class ShoppingCart implements Serializable {
 
     /**
      * Возвращает размер корзины - количество товаров в корзине.
+     *
+     * @return Значение типа int - количество товаров в корзине.
      */
     public int getSize() {
         int size = 0;

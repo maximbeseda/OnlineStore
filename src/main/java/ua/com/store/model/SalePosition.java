@@ -7,6 +7,11 @@ import javax.persistence.*;
  * Торговая позиция составляет товар и количество этого товара.
  * Аннотация @Entity говорит о том что объекты этого класса будет обрабатываться hibernate.
  * Аннотация @Table(name = "sales") указывает на таблицу "sales", в которой будут храниться объекты.
+ *
+ * @author Максим Беседа
+ * @see Product
+ * @see Order
+ * @see ShoppingCart
  */
 @Entity
 @Table(name = "Sales")
@@ -49,12 +54,25 @@ public class SalePosition extends Model {
         number = 0;
     }
 
+    /**
+     * Конструктор для инициализации основных переменных категории.
+     *
+     * @param product Товар текущей торговой позици.
+     * @param number  Количество товаров в текущей торговой позиции.
+     */
     public SalePosition(Product product, int number) {
         super();
         this.product = product;
         this.number = number;
     }
 
+    /**
+     * Возвращает описание торговой позиции.
+     * Переопределенный метод родительского класса {@link Object}.
+     *
+     * @return Значение типа {@link String} - строка описание торговой позиции
+     * (уникальный код позиции, информация о товаре, количество тваров и общая цена торговой позиции).
+     */
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("SalePosition #" + getId() + ": ");
@@ -68,6 +86,8 @@ public class SalePosition extends Model {
     /**
      * Генерирует строку для конечного сравнения торговых позиций в методе equals() родительского класса.
      * Переопределенный метод родительского класса {@link Model}.
+     *
+     * @return Значение типа {@link String} - результат работы метода сравнения входящего товара toEquals.
      */
     @Override
     public String toEquals() {
@@ -80,6 +100,8 @@ public class SalePosition extends Model {
 
     /**
      * Возвращает общую стоимость торговой позиции (цена товара * количество).
+     *
+     * @return Значение типа double - цена торговой пзиции.
      */
     public double getPrice() {
         return product.getPrice() * number;
@@ -105,10 +127,6 @@ public class SalePosition extends Model {
         return number;
     }
 
-    /**
-     * Устанавливает номер торговой позиции.
-     * Если входной параметр меньше 0, тогда значение номера будет 0.
-     */
     public void setNumber(int number) {
         this.number = number > 0 ? number : 0;
     }

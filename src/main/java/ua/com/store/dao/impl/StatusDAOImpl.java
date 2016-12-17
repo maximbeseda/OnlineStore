@@ -16,6 +16,12 @@ import ua.com.store.repository.StatusRepository;
  * Класс помечена аннотацией @Repository (наследник Spring'овой аннотации @Component).
  * Это позволяет Spring автоматически зарегестрировать компонент в своём контексте
  * для последующей инъекции.
+ *
+ * @author Максим Беседа
+ * @see DataDAOImpl
+ * @see StatusDAO
+ * @see Status
+ * @see StatusRepository
  */
 @Repository
 public class StatusDAOImpl extends DataDAOImpl<Status> implements StatusDAO {
@@ -28,6 +34,9 @@ public class StatusDAOImpl extends DataDAOImpl<Status> implements StatusDAO {
      * Конструктор для инициализации основных переменных.
      * Помечаный аннотацией @Autowired, которая позволит Spring
      * автоматически инициализировать объект.
+     *
+     * @param repository Реализация репозитория {@link StatusRepository}
+     *                   для работы статусов заказов с базой данных.
      */
     @Autowired
     public StatusDAOImpl(StatusRepository repository) {
@@ -38,6 +47,8 @@ public class StatusDAOImpl extends DataDAOImpl<Status> implements StatusDAO {
     /**
      * Добавляет статус в базу даных по названию, которое может принимать
      * одно из значений перечисления {@link StatusEnum}.
+     *
+     * @param title Название статуса.
      */
     @Override
     public void add(StatusEnum title, String description) {
@@ -47,6 +58,9 @@ public class StatusDAOImpl extends DataDAOImpl<Status> implements StatusDAO {
     /**
      * Возвращает статус из базы даных по названию, которое может принимать
      * одно из значений перечисления {@link StatusEnum}.
+     *
+     * @param title Название роли.
+     * @return Объект класса {@link Status} - статус с уникальным названием.
      */
     @Override
     public Status get(StatusEnum title) {
@@ -55,6 +69,8 @@ public class StatusDAOImpl extends DataDAOImpl<Status> implements StatusDAO {
 
     /**
      * Возвращает из базы даных статус по-умолчанию.
+     *
+     * @return Объект класса {@link Status} - статус по-умолчание.
      */
     @Override
     public Status getDefault() {
@@ -64,6 +80,8 @@ public class StatusDAOImpl extends DataDAOImpl<Status> implements StatusDAO {
     /**
      * Удаляет статус из базы даных по названию, которое может принимать
      * одно из значений перечисления {@link StatusEnum}.
+     *
+     * @param title Название статуса.
      */
     @Override
     public void remove(StatusEnum title) {

@@ -21,6 +21,12 @@ import ua.com.store.service.StatusService;
  * Методы класса помечены аннотацией @Transactional - перед исполнением метода помеченного
  * данной аннотацией начинается транзакция, после выполнения метода транзакция коммитится,
  * при выбрасывании RuntimeException откатывается.
+ *
+ * @author Максим Беседа
+ * @see MainServiceImpl
+ * @see StatusService
+ * @see Status
+ * @see StatusDAO
  */
 @Service
 public class StatusServiceImpl extends MainServiceImpl<Status> implements StatusService {
@@ -33,6 +39,8 @@ public class StatusServiceImpl extends MainServiceImpl<Status> implements Status
      * Конструктор для инициализации основных переменных сервиса.
      * Помечаный аннотацией @Autowired, которая позволит Spring
      * автоматически инициализировать объект.
+     *
+     * @param dao Реализация интерфейса {@link StatusDAO} для работы статусов заказов с базой данных.
      */
     @Autowired
     public StatusServiceImpl(StatusDAO dao) {

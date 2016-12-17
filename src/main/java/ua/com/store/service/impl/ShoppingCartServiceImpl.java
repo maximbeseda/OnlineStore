@@ -20,6 +20,11 @@ import java.util.List;
  * Методы класса помечены аннотацией @Transactional - перед исполнением метода помеченного
  * данной аннотацией начинается транзакция, после выполнения метода транзакция коммитится,
  * при выбрасывании RuntimeException откатывается.
+ *
+ * @author Максим Беседа
+ * @see ShoppingCart
+ * @see ShoppingCartService
+ * @see ShoppingCartDao
  */
 @Service
 public class ShoppingCartServiceImpl implements ShoppingCartService {
@@ -31,6 +36,8 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     /**
      * Конструктор для инициализации основных переменных сервиса.
      * Помечаный аннотацией @Autowired, которая позволит Spring автоматически инициализировать объект.
+     *
+     * @param shoppingCartDAO Реализация интерфейса для работы з торговой корзиной.
      */
     @Autowired
     public ShoppingCartServiceImpl(ShoppingCartDao shoppingCartDAO) {
@@ -55,6 +62,8 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     /**
      * Добавляет торговую позицию в список корзины.
+     *
+     * @param salePosition Торговая позиция, которая будет добавлена в корзину.
      */
     @Override
     @Transactional
@@ -66,6 +75,8 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     /**
      * Возвращает список всех торговых позиций в корзине. Режим только для чтения.
+     *
+     * @return Объект типа {@link List} - список торговых позиций.
      */
     @Override
     @Transactional(readOnly = true)
@@ -75,6 +86,8 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     /**
      * Удаляет торговую позицию из корзины.
+     *
+     * @param salePosition Торговая позиция для удаления из корзины.
      */
     @Override
     @Transactional
@@ -95,6 +108,8 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     /**
      * Возвращает цену корзины - цена всех продаж. Режим только для чтения.
+     *
+     * @return Значение типа double - цена корзины.
      */
     @Override
     @Transactional(readOnly = true)
@@ -105,6 +120,8 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     /**
      * Возвращает размер корзины, то есть количество товаров в корзине.
      * Режим только для чтения.
+     *
+     * @return Значение типа int - количество товаров в корзине.
      */
     @Override
     @Transactional(readOnly = true)

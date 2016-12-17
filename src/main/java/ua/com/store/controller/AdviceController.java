@@ -22,22 +22,27 @@ import javax.servlet.http.HttpServletRequest;
  * Методы класса работают с объектом, возвращенным handleRequest методом, является
  * типом {@link ModelAndView}, который агрегирует все параметры модели и имя отображения.
  * Этот тип представляет Model и View в MVC шаблоне.
+ *
+ * @author Максим Беседа
+ * @see BadRequestException
+ * @see DuplicateException
+ * @see ForbiddenException
+ * @see WrongInformationException
  */
 @ControllerAdvice
 public class AdviceController {
-    /**
-     * Объект сервиса для работы с корзиной.
-     */
+
+    /** Объект сервиса для работы с корзиной. */
     private ShoppingCartService shoppingCartService;
 
-    /**
-     * Объект для логирования информации.
-     */
+    /** Объект для логирования информации. */
     private static final Logger logger = Logger.getLogger(AdviceController.class);
 
     /**
      * Конструктор для инициализации основных переменных класса-перехватчика исключений.
      * Помечен аннотацией @Autowired, которая позволит Spring автоматически инициализировать объекты.
+     *
+     * @param shoppingCartService Объект сервиса для работы с корзиной.
      */
     @Autowired
     public AdviceController(ShoppingCartService shoppingCartService) {
@@ -47,6 +52,10 @@ public class AdviceController {
 
     /**
      * Перехват NoHandlerFoundException исключения (http статус 404).
+     *
+     * @param ex      Объект исключения NoHandlerFoundException.
+     * @param request Объект интерфейса HttpServletRequest.
+     * @return Объект класса {@link ModelAndView}.
      */
     @ExceptionHandler(NoHandlerFoundException.class)
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
@@ -56,6 +65,10 @@ public class AdviceController {
 
     /**
      * Перехват BadRequestException исключения (http статус 400).
+     *
+     * @param ex      Объект исключения BadRequestException.
+     * @param request Объект интерфейса HttpServletRequest.
+     * @return Объект класса {@link ModelAndView}.
      */
     @ExceptionHandler(BadRequestException.class)
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
@@ -65,6 +78,10 @@ public class AdviceController {
 
     /**
      * Перехват WrongInformationException исключения (http статус 400).
+     *
+     * @param ex      Объект исключения WrongInformationException.
+     * @param request Объект интерфейса HttpServletRequest.
+     * @return Объект класса {@link ModelAndView}.
      */
     @ExceptionHandler(WrongInformationException.class)
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
@@ -74,6 +91,10 @@ public class AdviceController {
 
     /**
      * Перехват ForbiddenException исключения (http статус 403).
+     *
+     * @param ex      Объект исключения ForbiddenException.
+     * @param request Объект интерфейса HttpServletRequest.
+     * @return Объект класса {@link ModelAndView}.
      */
     @ExceptionHandler(ForbiddenException.class)
     @ResponseStatus(value = HttpStatus.FORBIDDEN)
@@ -83,6 +104,10 @@ public class AdviceController {
 
     /**
      * Перехват DuplicateException исключения (http статус 409).
+     *
+     * @param ex      Объект исключения DuplicateException.
+     * @param request Объект интерфейса HttpServletRequest.
+     * @return Объект класса {@link ModelAndView}.
      */
     @ExceptionHandler(DuplicateException.class)
     @ResponseStatus(value = HttpStatus.CONFLICT)
@@ -92,6 +117,10 @@ public class AdviceController {
 
     /**
      * Перехват всех остальных исключения (http статус 500).
+     *
+     * @param ex      Объект исключения Exception.
+     * @param request Объект интерфейса HttpServletRequest.
+     * @return Объект класса {@link ModelAndView}.
      */
     @ExceptionHandler(Exception.class)
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
@@ -101,6 +130,11 @@ public class AdviceController {
 
     /**
      * Обработака всех входящих исключений: логирование, печать стека, возврат модели с информациею.
+     *
+     * @param ex        Объект исключения наследника Exception.
+     * @param request   Объект интерфейса HttpServletRequest.
+     * @param textError Текст исключения, который нужно вывести на страницу.
+     * @return Объект класса {@link ModelAndView}.
      */
     private ModelAndView handleException(Exception ex, HttpServletRequest request, String textError) {
         logger.error(request.getRemoteAddr() + " : " + request.getRequestURL());

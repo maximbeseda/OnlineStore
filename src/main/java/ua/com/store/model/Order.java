@@ -10,42 +10,36 @@ import java.util.List;
  * Заказ описывает торговые позиции, клиента, сделавшего заказ, и менеджера, который обработал заказ.
  * Аннотация @Entity говорит о том что объекты этого класса будет обрабатываться hibernate.
  * Аннотация @Table(name = "orders") указывает на таблицу "orders", в которой будут храниться объекты.
+ *
+ * @author Максим Беседа
+ * @see Status
+ * @see User
+ * @see SalePosition
  */
 @Entity
 @Table(name = "Orders")
 public class Order extends Model {
-    /**
-     * Номер версии класса необходимый для десериализации и сериализации.
-     */
+
+    /** Номер версии класса необходимый для десериализации и сериализации. */
     private static final long serialVersionUID = 1L;
 
-    /**
-     * Номер заказа. Значение поля сохраняется в колонке "number". Не может быть null.
-     */
+    /** Номер заказа. Значение поля сохраняется в колонке "number". Не может быть null. */
     @Column(name = "number", nullable = false)
     private String number;
 
-    /**
-     * Дата модификации заказа. Значение поля сохраняется в колонке "date". Не может быть null.
-     */
+    /** Дата модификации заказа. Значение поля сохраняется в колонке "date". Не может быть null. */
     @Column(name = "date", nullable = false)
     private String date;
 
-    /**
-     * Адрес доставки заказа. Значение поля сохраняется в колонке "shipping_address".
-     */
+    /** Адрес доставки заказа. Значение поля сохраняется в колонке "shipping_address". */
     @Column(name = "shipping_address")
     private String shippingAddress;
 
-    /**
-     * Детали доставки заказа. Значение поля сохраняется в колонке "shipping_details".
-     */
+    /** Детали доставки заказа. Значение поля сохраняется в колонке "shipping_details". */
     @Column(name = "shipping_details")
     private String shippingDetails;
 
-    /**
-     * Описание заказа. Значение поля сохраняется в колонке "description".
-     */
+    /** Описание заказа. Значение поля сохраняется в колонке "description". */
     @Column(name = "description")
     private String description;
 
@@ -111,6 +105,10 @@ public class Order extends Model {
 
     /**
      * Конструктор для инициализации основных переменных заказа.
+     *
+     * @param status        Статус заказа.
+     * @param client        Клиент, оформивший заказ.
+     * @param salePositions Список торговых позиция.
      */
     public Order(Status status, User client, List<SalePosition> salePositions) {
         super();
@@ -126,6 +124,13 @@ public class Order extends Model {
         date = dateToString(new Date());
     }
 
+    /**
+     * Возвращает описание заказа.
+     * Переопределенный метод родительского класса {@link Object}.
+     *
+     * @return Значение типа {@link String} - строка описание заказа (номер, статус, дата, информация о клиенте,
+     * информация о менеджере, адрес и детали доставкиб описание, торговые позиции).
+     */
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -171,6 +176,8 @@ public class Order extends Model {
     /**
      * Генерирует строку для конечного сравнения заказа в методе equals() родительского класса.
      * Переопределенный метод родительского класса {@link Model}.
+     *
+     * @return Значение типа {@link String} - номер заказа.
      */
     @Override
     public String toEquals() {
@@ -179,6 +186,15 @@ public class Order extends Model {
 
     /**
      * Инициализация полей заказа.
+     *
+     * @param number          Номер заказа.
+     * @param date            Дата модификации заказа.
+     * @param shippingAddress Адрес доставки заказа.
+     * @param shippingDetails Детали доставки заказа.
+     * @param description     Описание заказа.
+     * @param status          Статус заказа.
+     * @param client          Клиент, оформивший заказ.
+     * @param manager         Менеджер, обработавший заказ.
      */
     public void initialize(String number, Date date, String shippingAddress, String shippingDetails,
                            String description, Status status, User client, User manager) {
@@ -194,6 +210,8 @@ public class Order extends Model {
 
     /**
      * Добавляет торговую позицию в текущий заказа.
+     *
+     * @param salePosition Торговая позиция, которая будет добавлена в заказ.
      */
     public void addSalePosition(SalePosition salePosition) {
         salePositions.add(salePosition);
@@ -204,6 +222,8 @@ public class Order extends Model {
 
     /**
      * Добавляет список торговых позиций в текущий заказ.
+     *
+     * @param salePositions Список торговых позиций, которые будут дабавлены в заказ.
      */
     public void addSalePositions(List<SalePosition> salePositions) {
         this.salePositions.addAll(salePositions);
@@ -216,6 +236,8 @@ public class Order extends Model {
 
     /**
      * Удаляет торговую позицию из текущего заказа.
+     *
+     * @param salePosition Торговая позиция, которая будет удалена из заказу.
      */
     public void removeSalePosition(SalePosition salePosition) {
         salePositions.remove(salePosition);
@@ -223,6 +245,8 @@ public class Order extends Model {
 
     /**
      * Удаляет список торговых позиция из текущего заказа.
+     *
+     * @param salePositions Список торговых позиция, которые будут удалены из заказа.
      */
     public void removeSalePositions(List<SalePosition> salePositions) {
         this.salePositions.removeAll(salePositions);
@@ -256,9 +280,7 @@ public class Order extends Model {
         this.number = number == null ? "" : number;
     }
 
-    /**
-     * Генерирует новый номер заказа.
-     */
+    /** Генерирует новый номер заказа. */
     public void newNumber() {
         number = createRandomString();
     }
@@ -321,6 +343,8 @@ public class Order extends Model {
 
     /**
      * Возвращает цену заказа - общую стоимость всех торговых позиция.
+     *
+     * @return Значение типа double - цена заказа.
      */
     public double getPrice() {
         double price = 0;

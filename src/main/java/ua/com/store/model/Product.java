@@ -8,52 +8,42 @@ import java.util.List;
  * Класс описывает сущность "Товар", наследует класс {@link Model}.
  * Аннотация @Entity говорит о том что объекты этого класса будет обрабатываться hibernate.
  * Аннотация @Table(name = "products") указывает на таблицу "products", в которой будут храниться объекты.
+ *
+ * @author Максим Беседа
+ * @see Category
+ * @see Photo
+ * @see SalePosition
  */
 @Entity
 @Table(name = "Products")
 public class Product extends Model {
-    /**
-     * Номер версии класса необходимый для десериализации и сериализации.
-     */
+
+    /** Номер версии класса необходимый для десериализации и сериализации. */
     private static final long serialVersionUID = 1L;
 
-    /**
-     * Набор вожможных для использованния символов по-умолчанию.
-     */
+    /** Набор вожможных для использованния символов по-умолчанию. */
     public static final char[] CODE_PATTERN = {'1', '2', '3', '4', '5', '6', '7', '8', '9', '0'};
 
-    /**
-     * Длина возвращаемой строки по-умолчанию.
-     */
+    /** Длина возвращаемой строки по-умолчанию. */
     public static final int CODE_LENGTH = 5;
 
-    /**
-     * Артикль товара. Значение поля сохраняется в колонке "article". Не может быть null.
-     */
+    /** Артикль товара. Значение поля сохраняется в колонке "article". Не может быть null. */
     @Column(name = "article", nullable = false)
     private int article;
 
-    /**
-     * Название товара. Значение поля сохраняется в колонке "title". Не может быть null.
-     */
+    /** Название товара. Значение поля сохраняется в колонке "title". Не может быть null. */
     @Column(name = "title", nullable = false)
     private String title;
 
-    /**
-     * URL товара. Значение поля сохраняется в колонке "url". Не может быть null.
-     */
+    /** URL товара. Значение поля сохраняется в колонке "url". Не может быть null. */
     @Column(name = "url", nullable = false)
     private String url;
 
-    /**
-     * Параметры товара. Значение поля сохраняется в колонке "parameters".
-     */
+    /** Параметры товара. Значение поля сохраняется в колонке "parameters". */
     @Column(name = "parameters")
     private String parameters;
 
-    /**
-     * Описание товара. Значение поля сохраняется в колонке "description".
-     */
+    /** Описание товара. Значение поля сохраняется в колонке "description". */
     @Column(name = "description")
     private String description;
 
@@ -115,6 +105,12 @@ public class Product extends Model {
     /**
      * Конструктор для инициализации основных переменных товара.
      * Автоматически инициализируются поля article.
+     *
+     * @param title    Название товара.
+     * @param url      URL товара.
+     * @param category Категория товара.
+     * @param photo    Изображение товара.
+     * @param price    Цена товара.
      */
     public Product(String title, String url, Category category, Photo photo, double price) {
         super();
@@ -128,7 +124,14 @@ public class Product extends Model {
         description = "";
         newArticle();
     }
-    
+
+    /**
+     * Возвращает описание товара.
+     * Переопределенный метод родительского класса {@link Object}.
+     *
+     * @return Значение типа {@link String} - строка описание товара
+     * (название, параметры, описание, название категории, цена).
+     */
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -146,6 +149,8 @@ public class Product extends Model {
     /**
      * Генерирует строку для конечного сравнения товаров в методе equals() родительского класса.
      * Переопределенный метод родительского класса {@link Model}.
+     *
+     * @return Значение типа {@link String} - название + URL + цена товара.
      */
     @Override
     public String toEquals() {
@@ -154,6 +159,14 @@ public class Product extends Model {
 
     /**
      * Инициализация полей товара.
+     *
+     * @param title       Название товара.
+     * @param url         URL товара.
+     * @param parameters  Параметры товара.
+     * @param description Описание товара.
+     * @param category    Категория товара.
+     * @param photo       Изображение товара.
+     * @param price       Цена товара.
      */
     public void initialize(String title, String url, String parameters,
                            String description, Category category, Photo photo, double price) {
@@ -166,9 +179,7 @@ public class Product extends Model {
         setPrice(price);
     }
 
-    /**
-     * Генерирует новый артикль товара.
-     */
+    /** Генерирует новый артикль товара. */
     public void newArticle() {
         article = Integer.parseInt(createRandomString(CODE_PATTERN, CODE_LENGTH));
     }

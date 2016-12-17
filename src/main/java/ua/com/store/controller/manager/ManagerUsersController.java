@@ -6,6 +6,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+import ua.com.store.model.Order;
+import ua.com.store.model.User;
+import ua.com.store.service.OrderService;
 import ua.com.store.service.RoleService;
 import ua.com.store.service.UserService;
 
@@ -19,23 +22,29 @@ import ua.com.store.service.UserService;
  * Методы класса работают с объектом, возвращенным handleRequest методом, является
  * типом {@link ModelAndView}, который агрегирует все параметры модели и имя отображения.
  * Этот тип представляет Model и View в MVC шаблоне.
+ *
+ * @author Максим Беседа
+ * @see User
+ * @see Order
+ * @see UserService
+ * @see OrderService
  */
 @Controller
 @RequestMapping(value = "/managers")
 public class ManagerUsersController {
-    /**
-     * Объект сервиса для работы с пользователями.
-     */
+
+    /** Объект сервиса для работы с пользователями. */
     private UserService userService;
 
-    /**
-     * Объект сервиса для работы с ролями пользователей.
-     */
+    /** Объект сервиса для работы с ролями пользователей. */
     private RoleService roleService;
 
     /**
      * Конструктор для инициализации основных переменных контроллера страниц для менеджеров.
      * Помечен аннотацией @Autowired, которая позволит Spring автоматически инициализировать объекты.
+     *
+     * @param userService Объект сервиса для работы с пользователями.
+     * @param roleService Объект сервиса для работы с ролями пользователей.
      */
     @Autowired
     public ManagerUsersController(UserService userService, RoleService roleService) {
@@ -47,6 +56,9 @@ public class ManagerUsersController {
     /**
      * Возвращает всех пользователей на страницу "managers/user/all".
      * URL запроса "/managers/users", метод GET.
+     *
+     * @param modelAndView Объект класса {@link ModelAndView}.
+     * @return Объект класса {@link ModelAndView}.
      */
     @RequestMapping(value = "/users", method = RequestMethod.GET)
     public ModelAndView viewAllPersonnel(ModelAndView modelAndView) {
@@ -61,6 +73,10 @@ public class ManagerUsersController {
     /**
      * Возвращает пользователя с уникальным кодом id на страницу "managers/user/one".
      * URL запроса "/managers/view_user_{id}", метод GET.
+     *
+     * @param id           Код пользвателя, которою нужно вернуть.
+     * @param modelAndView Объект класса {@link ModelAndView}.
+     * @return Объект класса {@link ModelAndView}.
      */
     @RequestMapping(value = "/view_user_{id}", method = RequestMethod.GET)
     public ModelAndView viewUser(@PathVariable(value = "id") long id, ModelAndView modelAndView) {

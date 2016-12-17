@@ -16,18 +16,19 @@ import java.util.List;
  * клиенты и т.д).
  * Аннотация @Entity говорит о том что объекты этого класса будет обрабатываться hibernate.
  * Аннотация @Table(name = "users") указывает на таблицу "users", в которой будут храниться объекты.
+ *
+ * @author Максим Беседа
+ * @see Role
+ * @see Order
  */
 @Entity
 @Table(name = "Users")
 public class User extends Model implements UserDetails {
-    /**
-     * Номер версии класса необходимый для десериализации и сериализации.
-     */
+
+    /** Номер версии класса необходимый для десериализации и сериализации. */
     private static final long serialVersionUID = 1L;
 
-    /**
-     * Имя пользователя. Значение поля сохраняется в колонке "name". Не может быть null.
-     */
+    /** Имя пользователя. Значение поля сохраняется в колонке "name". Не может быть null. */
     @Column(name = "name", nullable = false)
     private String name;
 
@@ -131,6 +132,14 @@ public class User extends Model implements UserDetails {
         description = "";
     }
 
+    /**
+     * Конструктор для инициализации основных переменных заказа.
+     *
+     * @param name  Имя пользователя.
+     * @param email Электронная почта пользователя.
+     * @param phone Номер телефона пользователя.
+     * @param role  Роль пользователя.
+     */
     public User(String name, String email, String phone, Role role) {
         super();
         this.name = name;
@@ -146,6 +155,13 @@ public class User extends Model implements UserDetails {
         description = "";
     }
 
+    /**
+     * Возвращает описание пользователя.
+     * Переопределенный метод родительского класса {@link Object}.
+     *
+     * @return Значение типа {@link String} - строка описание пользователя
+     * (имя, роль, электронная почта, номер телефона).
+     */
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -159,6 +175,8 @@ public class User extends Model implements UserDetails {
     /**
      * Генерирует строку для конечного сравнения пользователей в методе equals() родительского класса.
      * Переопределенный метод родительского класса {@link Model}.
+     *
+     * @return Значение типа {@link String} - имя пользователя + электронная почта + номер телефона.
      */
     @Override
     public String toEquals() {
@@ -212,6 +230,8 @@ public class User extends Model implements UserDetails {
     /**
      * Возвращает список всех ролей пользователя через объект-обертку
      * класса SimpleGrantedAuthority. Реализованый метод интерфейса {@link UserDetails}.
+     *
+     * @return Объект типа {@link List} - список ролей пользователя.
      */
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -222,6 +242,17 @@ public class User extends Model implements UserDetails {
 
     /**
      * Инициализация полей пользователя.
+     *
+     * @param name        Имя пользвателя.
+     * @param username    Логин пользователя.
+     * @param password    Пароль пользователя.
+     * @param email       Электронная почта пользователя.
+     * @param phone       Номер телефона пользователя.
+     * @param vkontakte   Ссылка на страничку в соц. сети "ВКонтакте" пользователя.
+     * @param facebook    Ссылка на страничку в соц. сети "Facebook" пользователя.
+     * @param skype       Логин пользователя в месенджере "Skype".
+     * @param description Описание пользователя.
+     * @param role        Роль пользователя.
      */
     public void initialize(String name, String username, String password, String email,
                            String phone, String vkontakte, String facebook, String skype,

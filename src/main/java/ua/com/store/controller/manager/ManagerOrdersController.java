@@ -29,33 +29,37 @@ import java.util.Date;
  * Методы класса работают с объектом, возвращенным handleRequest методом, является
  * типом {@link ModelAndView}, который агрегирует все параметры модели и имя отображения.
  * Этот тип представляет Model и View в MVC шаблоне.
+ *
+ * @author Максим Беседа
+ * @see User
+ * @see Order
+ * @see UserService
+ * @see OrderService
  */
 @Controller
 @RequestMapping(value = "/managers")
 public class ManagerOrdersController {
-    /**
-     * Объект сервиса для работы с пользователями.
-     */
+
+    /** Объект сервиса для работы с пользователями. */
     private UserService userService;
 
-    /**
-     * Объект сервиса для работы с заказами клиентов.
-     */
+    /** Объект сервиса для работы с заказами клиентов. */
     private OrderService orderService;
 
-    /**
-     * Объект сервиса для работы с статусами виполнения заказов.
-     */
+    /** Объект сервиса для работы с статусами виполнения заказов. */
     private StatusService statusService;
 
-    /**
-     * Объект сервиса для работы с ролями пользователей.
-     */
+    /** Объект сервиса для работы с ролями пользователей. */
     private RoleService roleService;
 
     /**
      * Конструктор для инициализации основных переменных контроллера страниц для менеджеров.
      * Помечен аннотацией @Autowired, которая позволит Spring автоматически инициализировать объекты.
+     *
+     * @param userService   Объект сервиса для работы с пользователями.
+     * @param orderService  Объект сервиса для работы с заказами клиентов.
+     * @param statusService Объект сервиса для работы с статусами виполнения заказов.
+     * @param roleService   Объект сервиса для работы с ролями пользователей.
      */
     @Autowired
     public ManagerOrdersController(UserService userService, OrderService orderService,
@@ -70,6 +74,9 @@ public class ManagerOrdersController {
     /**
      * Возвращает все заказы, сделаные клиентами, на страницу "managers/order/all".
      * URL запроса {"/managers" , "/managers/orders"}, метод GET.
+     *
+     * @param modelAndView Объект класса {@link ModelAndView}.
+     * @return Объект класса {@link ModelAndView}.
      */
     @RequestMapping(value = {"", "/orders"}, method = RequestMethod.GET)
     public ModelAndView viewAllOrders(ModelAndView modelAndView) {
@@ -83,6 +90,10 @@ public class ManagerOrdersController {
     /**
      * Возвращает заказ с уникальным кодом id на страницу "managers/order/one".
      * URL запроса "/managers/view_order_{id}", метод GET.
+     *
+     * @param id           Код заказа, который нужно вернуть.
+     * @param modelAndView Объект класса {@link ModelAndView}.
+     * @return Объект класса {@link ModelAndView}.
      */
     @RequestMapping(value = "/view_order_{id}", method = RequestMethod.GET)
     public ModelAndView viewOrder(@PathVariable(value = "id") long id, ModelAndView modelAndView) {
@@ -102,6 +113,10 @@ public class ManagerOrdersController {
      * Возвращает страницу "managers/order/edit" для редактирование заказа с уникальным кодом,
      * который совпадает с параметром id, или перенаправляет по запросу "/managers/orders", если
      * этот заказ уже обработал другой менеджер. URL запроса "/managers/edit_order_{id}", метод GET.
+     *
+     * @param id           Код заказа, которую нужно отредактировать.
+     * @param modelAndView Объект класса {@link ModelAndView}.
+     * @return Объект класса {@link ModelAndView}.
      */
     @RequestMapping(value = "/edit_order_{id}", method = RequestMethod.GET)
     public ModelAndView getEditOrderPage(@PathVariable(value = "id") long id, ModelAndView modelAndView) {
@@ -122,6 +137,19 @@ public class ManagerOrdersController {
     /**
      * Обновляет заказ по входящим параметрам и перенаправляет по запросу "/managers/view_order_{id}".
      * URL запроса "/managers/update_category", метод POST.
+     *
+     * @param id              Код заказа для обновления.
+     * @param managerId       Код менеджера или администратора, который обработал заказ в последний раз.
+     * @param number          Номер заказа.
+     * @param statusId        Код статуса выполнения заказа.
+     * @param name            Имя клиента, оформивший заказ.
+     * @param email           Электронная почта клиента.
+     * @param phone           Номер телефона клиента.
+     * @param shippingAddress Адрес доставки товаров заказа.
+     * @param shippingDetails Детали доставки заказа.
+     * @param description     Описание заказа.
+     * @param modelAndView    Объект класса {@link ModelAndView}.
+     * @return Объект класса {@link ModelAndView}.
      */
     @RequestMapping(value = "/update_order", method = RequestMethod.POST)
     public ModelAndView updateOrder(@RequestParam long id,
@@ -160,6 +188,8 @@ public class ManagerOrdersController {
 
     /**
      * Возвращает исключение WrongInformationException, если обратится по запросу "/update_order" методом GET.
+     *
+     * @throws WrongInformationException Бросает исключение, если обратится к этому методу GET.
      */
     @RequestMapping(value = "/update_order", method = RequestMethod.GET)
     public void updateOrder() throws WrongInformationException {

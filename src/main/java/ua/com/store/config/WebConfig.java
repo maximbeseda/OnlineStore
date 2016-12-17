@@ -19,46 +19,40 @@ import org.springframework.web.servlet.view.JstlView;
  * аннотацией @EnableWebMvc - разрешает проекту использовать MVC;
  * аннотацией @ComponentScan - указываем фреймворку Spring, что компоненты надо искать внутри
  * пакетах "ua.com.store.controller" и "ua.com.store.config".
+ *
+ * @author Максим Беседа
+ * @see AppInitializer
+ * @see RootConfig
  */
 @Configuration
 @EnableWebMvc
 @ComponentScan(basePackages = {"ua.com.store.controller", "ua.com.store.config"})
 public class WebConfig extends WebMvcConfigurerAdapter {
 
-    /**
-     * Тип кодировки вьюшек.
-     */
+    /** Тип кодировки вьюшек. */
     private static final String CONTENT_TYPE = "text/html;charset=UTF-8";
 
-    /**
-     * Путь к вьюшкам.
-     */
+    /** Путь к вьюшкам. */
     private static final String PREFIX = "/WEB-INF/views/";
 
-    /**
-     * Разширение вьюшек.
-     */
+    /** Разширение вьюшек. */
     private static final String SUFFIX = ".jsp";
 
-    /**
-     * Путь к ресурсам.
-     */
+    /** Путь к ресурсам. */
     private static final String RESOURCES_URL = "/resources/";
 
-    /**
-     * URL запроса для авторизации.
-     */
+    /** URL запроса для авторизации. */
     private static final String LOGIN_URL = "/login";
 
-    /**
-     * Название вьюшки авторизации.
-     */
+    /** Название вьюшки авторизации. */
     private static final String LOGIN_VIEW_NAME = "client/login";
 
     /**
      * Указывает Spring'у где находятся компоненты представления, и как их отображать.
      * Вьюшки будут лежать в директории /WEB-INF/views/ и иметь разширение *.jsp.
      * Реализация интерфейса ViewResolver с настройками для вьюшек.
+     *
+     * @return Реализация интерфейса ViewResolver с настройками для вьюшек.
      */
     @Bean
     public ViewResolver viewResolver() {
@@ -73,6 +67,8 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
     /**
      * Указывает где будут хранится ресурсы.
+     *
+     * @param resource Объект класса ResourceHandlerRegistry с настройками для ресурсов.
      */
     @Override
     public void addResourceHandlers(final ResourceHandlerRegistry resource) {
@@ -83,6 +79,8 @@ public class WebConfig extends WebMvcConfigurerAdapter {
      * Настройка логин-контроллера.
      * Оказывает помощь в регистрации простого автоматизированного логин-контроллера предварительно
      * сконфигурированных с кодом состояния и вьюшкой.
+     *
+     * @param viewController Объект класса ViewControllerRegistry.
      */
     @Override
     public void addViewControllers(ViewControllerRegistry viewController) {

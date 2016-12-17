@@ -6,17 +6,19 @@ import javax.servlet.http.HttpSessionListener;
 /**
  * Класс реализует методы интерфейс {@link HttpSessionListener} для получения уведомления
  * об изменениях событий жизненного цикла HttpSession.
+ *
+ * @author Максим Беседа
  */
 public class SessionListener implements HttpSessionListener {
 
-    /**
-     * Интервал времени.
-     */
+    /** Интервал времени. */
     private static final int INTERVAL = 24 * 60 * 60;
 
     /**
      * Получает уведомление о том, что был создан сеанс.
      * Максимальный интервал активности 1 день.
+     *
+     * @param sessionEvent Объект класса HttpSessionEvent, содержащий сессию.
      */
     @Override
     public void sessionCreated(HttpSessionEvent sessionEvent) {
@@ -25,6 +27,8 @@ public class SessionListener implements HttpSessionListener {
 
     /**
      * Получает уведомление о том, что сессия вскоре будет признана недействительной.
+     *
+     * @param sessionEvent Объект класса HttpSessionEvent, содержащий сессию.
      */
     @Override
     public void sessionDestroyed(HttpSessionEvent sessionEvent) {

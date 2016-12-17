@@ -15,13 +15,13 @@ import java.util.List;
  * Класс-контроллер для настройки поисковой оптимизации (SEO).
  * Аннотация @Controller служит для сообщения Spring'у о том, что данный класс
  * является bean'ом и его необходимо подгрузить при старте приложения.
+ *
+ * @author Максим Беседа
  */
 @Controller
 public class SEOController {
 
-    /**
-     * Информация о сайте для поисковых систем.
-     */
+    /** Информация о сайте для поисковых систем. */
     private final static String ROBOTS = "User-agent: Yandex\n" +
             "Disallow: /admin\n" +
             "Disallow: /managers\n" +
@@ -44,19 +44,18 @@ public class SEOController {
             "\n" +
             "Sitemap: http://store.com.ua/sitemap.xml";
 
-    /**
-     * Объект сервиса для работы с товарами.
-     */
+    /** Объект сервиса для работы с товарами. */
     private ProductService productService;
 
-    /**
-     * Объект сервиса для работы с категориями товаров.
-     */
+    /** Объект сервиса для работы с категориями товаров. */
     private CategoryService categoryService;
 
     /**
      * Конструктор для инициализации основных переменных SEO контроллера.
      * Помечен аннотацией @Autowired, которая позволит Spring автоматически инициализировать объекты.
+     *
+     * @param productService  Объект сервиса для работы с товарами.
+     * @param categoryService Объект сервиса для работы с категориями товаров.
      */
     @Autowired
     public SEOController(ProductService productService, CategoryService categoryService) {
@@ -69,6 +68,8 @@ public class SEOController {
      * Возвращает файл robots.txt для поисковых систем.
      * Аннотация @ResponseBody указывает на то, что результат работы метода в контроллере был выведен
      * непосредственно в тело ответа на запрос, а не послужил адресом перехода и не был помещён как параметр в модель.
+     *
+     * @return Значение типа String - информация о сайте для поисковых систем.
      */
     @RequestMapping(value = "/robots.txt", produces = {"text/plain"})
     @ResponseBody

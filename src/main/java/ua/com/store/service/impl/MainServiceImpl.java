@@ -19,6 +19,20 @@ import java.util.List;
  * Методы класса помечены аннотацией @Transactional - перед исполнением метода помеченного
  * данной аннотацией начинается транзакция, после выполнения метода транзакция коммитится,
  * при выбрасывании RuntimeException откатывается.
+ *
+ * @author Максим Беседа
+ * @param <T> Класс-наследник класса {@link Model}.
+ * @see Model
+ * @see MainService
+ * @see CategoryServiceImpl
+ * @see OrderServiceImpl
+ * @see PhotoServiceImpl
+ * @see ProductServiceImpl
+ * @see RoleServiceImpl
+ * @see SalePositionServiceImpl
+ * @see MainServiceImpl
+ * @see UserServiceImpl
+ * @see DataDAO
  */
 public abstract class MainServiceImpl<T extends Model> implements MainService<T> {
     /**
@@ -28,6 +42,8 @@ public abstract class MainServiceImpl<T extends Model> implements MainService<T>
 
     /**
      * Конструктор для инициализации основных переменных сервиса.
+     *
+     * @param dao Реализация интерфейса {@link DataDAO} для работы моделей с базой данных.
      */
     public MainServiceImpl(DataDAO<T> dao) {
         super();
@@ -36,6 +52,8 @@ public abstract class MainServiceImpl<T extends Model> implements MainService<T>
 
     /**
      * Добавление модели в базу данных.
+     *
+     * @param model Модель для добавления.
      */
     @Override
     @Transactional
@@ -47,6 +65,8 @@ public abstract class MainServiceImpl<T extends Model> implements MainService<T>
 
     /**
      * Добавление коллекции моделей в базу данных.
+     *
+     * @param models Коллекция моделей для добавления.
      */
     @Override
     @Transactional
@@ -58,6 +78,8 @@ public abstract class MainServiceImpl<T extends Model> implements MainService<T>
 
     /**
      * Обновление существующей модели в базе данных.
+     *
+     * @param model Обновленная модель.
      */
     @Override
     @Transactional
@@ -91,6 +113,8 @@ public abstract class MainServiceImpl<T extends Model> implements MainService<T>
 
     /**
      * Получение всех моделей из базы данных. Режим только для чтения.
+     *
+     * @return Объект типа {@link List} - список всех моделей.
      */
     @Override
     @Transactional(readOnly = true)
@@ -100,6 +124,8 @@ public abstract class MainServiceImpl<T extends Model> implements MainService<T>
 
     /**
      * Удаление модели из базы данных.
+     *
+     * @param model Модель для удаления.
      */
     @Override
     @Transactional
@@ -126,6 +152,8 @@ public abstract class MainServiceImpl<T extends Model> implements MainService<T>
 
     /**
      * Удаление коллекции моделей из базы данных.
+     *
+     * @param models Коллекция моделей для удаления.
      */
     @Override
     @Transactional

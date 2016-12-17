@@ -21,38 +21,39 @@ import java.util.List;
  * Класс помечена аннотацией @Repository (наследник Spring'овой аннотации @Component).
  * Это позволяет Spring автоматически зарегестрировать компонент в своём контексте
  * для последующей инъекции.
+ *
+ * @author Максим Беседа
+ * @see DataDAOImpl
+ * @see UserDAO
+ * @see User
+ * @see UserRepository
  */
 @Repository
 public class UserDAOImpl extends DataDAOImpl<User> implements UserDAO {
 
-    /**
-     * ID роли клиента в базе данных.
-     */
+    /** ID роли клиента в базе данных. */
     private static Long CLIENT_ROLE_ID = 1L;
 
-    /**
-     * ID роли адмиистратора в базе данных.
-     */
+    /** ID роли адмиистратора в базе данных. */
     private static Long ADMIN_ROLE_ID = 2L;
 
-    /**
-     * ID роли менеджера в базе данных.
-     */
+    /** ID роли менеджера в базе данных. */
     private static Long MANAGER_ROLE_ID = 3L;
-    /**
-     * Реализация репозитория {@link UserRepository} для работы пользователей с базой данных.
-     */
+    /** Реализация репозитория {@link UserRepository} для работы пользователей с базой данных. */
     private UserRepository userRepository;
 
-    /**
-     * Реализация репозитория {@link RoleRepository} для работы  ролями пользователей с базой данных.
-     */
+    /** Реализация репозитория {@link RoleRepository} для работы  ролями пользователей с базой данных. */
     private RoleRepository roleRepository;
 
     /**
      * Конструктор для инициализации основных переменных.
      * Помечаный аннотацией @Autowired, которая позволит Spring
      * автоматически инициализировать объект.
+     *
+     * @param userRepository Реализация репозитория {@link UserRepository}
+     *                       для работы пользователей с базой данных.
+     * @param roleRepository Реализация репозитория {@link RoleRepository}
+     *                       для работы  ролями пользователей с базой данных.
      */
     @Autowired
     public UserDAOImpl(UserRepository userRepository, RoleRepository roleRepository) {
@@ -64,6 +65,9 @@ public class UserDAOImpl extends DataDAOImpl<User> implements UserDAO {
     /**
      * Возвращает пользователя из базы даных, у которого совпадает
      * имя с значением входящего параметра.
+     *
+     * @param name Имя пользователя для возврата.
+     * @return Объект класса {@link User} - пользователь.
      */
     @Override
     public User getByName(String name) {
@@ -73,6 +77,9 @@ public class UserDAOImpl extends DataDAOImpl<User> implements UserDAO {
     /**
      * Возвращает пользователя из базы даных, у которого совпадает уникальный
      * логин с значением входящего параметра.
+     *
+     * @param username Логин пользователя для возврата.
+     * @return Объект класса {@link User} - пользователь с уникальным логином.
 
      */
     @Override
@@ -82,6 +89,8 @@ public class UserDAOImpl extends DataDAOImpl<User> implements UserDAO {
 
     /**
      * Возвращает главного администратора сайта.
+     *
+     * @return Объект класса {@link User} - главный администратор.
      */
     @Override
     public User getMainAdministrator() {
@@ -91,6 +100,8 @@ public class UserDAOImpl extends DataDAOImpl<User> implements UserDAO {
 
     /**
      * Возвращает список всех администраторов сайта.
+     *
+     * @return Объект типа {@link List} - список администраторов.
      */
     @Override
     public List<User> getAdministrators() {
@@ -100,6 +111,8 @@ public class UserDAOImpl extends DataDAOImpl<User> implements UserDAO {
 
     /**
      * Возвращает список всех менеджеров сайта.
+     *
+     * @return Объект типа {@link List} - список менеджеров.
      */
     @Override
     public List<User> getManagers() {
@@ -109,6 +122,8 @@ public class UserDAOImpl extends DataDAOImpl<User> implements UserDAO {
 
     /**
      * Возвращает список всех клиентов сайта.
+     *
+     * @return Объект типа {@link List} - список клиентов.
      */
     @Override
     public List<User> getClients() {
@@ -118,6 +133,8 @@ public class UserDAOImpl extends DataDAOImpl<User> implements UserDAO {
 
     /**
      * Возвращает авторизированого пользователя.
+     *
+     * @return Объект класса {@link User} - авторизированый пользователь.
      */
     @Override
     public User getAuthenticatedUser() {
@@ -126,7 +143,6 @@ public class UserDAOImpl extends DataDAOImpl<User> implements UserDAO {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             user = (User) authentication.getPrincipal();
         } catch (Exception ex) {
-            //ex.printStackTrace();
             user = new User();
         }
         return user;
@@ -135,6 +151,8 @@ public class UserDAOImpl extends DataDAOImpl<User> implements UserDAO {
     /**
      * Удаляет пользователя из базы даных, у которого совпадает
      * имя с значением входящего параметра.
+     *
+     * @param name Имя пользователя для удаления.
      */
     @Override
     public void remove(String name) {
@@ -144,6 +162,8 @@ public class UserDAOImpl extends DataDAOImpl<User> implements UserDAO {
     /**
      * Удаляет пользователя из базы даных, у которого совпадает
      * роль с значением входящего параметра.
+     *
+     * @param role Роль пользователя для удаления.
      */
     @Override
     public void remove(Role role) {

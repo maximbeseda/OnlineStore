@@ -15,32 +15,32 @@ import java.util.*;
  * реализует интерфейс Serializable, может быть сериализован.
  * Аннотация @MappedSuperclass аннотация определяет класс, описанные
  * свойства и методы которого будут применены в классах-наследниках.
+ *
+ * @author Максим Беседа
+ * @see Category
+ * @see Order
+ * @see Photo
+ * @see Product
+ * @see Role
+ * @see SalePosition
+ * @see Status
+ * @see User
  */
 @MappedSuperclass
 public abstract class Model implements Serializable {
-    /**
-     * Номер версии класса необходимый для десериализации и сериализации.
-     */
+    /** Номер версии класса необходимый для десериализации и сериализации. */
     private static final long serialVersionUID = 1L;
 
-    /**
-     * Набор вожможных для использованния символов по-умолчанию.
-     */
+    /** Набор вожможных для использованния символов по-умолчанию. */
     protected static final char[] CODE_PATTERN = {'A', 'B', 'C', 'D', 'E', 'F', 'K', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0'};
 
-    /**
-     * Длина возвращаемой строки по-умолчанию.
-     */
+    /** Длина возвращаемой строки по-умолчанию. */
     protected static final int CODE_LENGTH = 6;
 
-    /**
-     * Строка-формат для даты по-умолчанию.
-     */
+    /** Строка-формат для даты по-умолчанию. */
     protected static final String DATE_PATTERN = "EEE, d MMM yyyy, HH:mm:ss";
 
-    /**
-     * Название (код) часового пояса по-умолчанию.
-     */
+    /** Название (код) часового пояса по-умолчанию. */
     protected static final String TIME_ZONE = "GMT+3";
 
     /**
@@ -55,6 +55,13 @@ public abstract class Model implements Serializable {
         super();
     }
 
+    /**
+     * Сравнивает текущий объект с объектом переданым как параметр.
+     * Переопределенный метод родительского класса {@link Object}.
+     *
+     * @param obj объект для сравнения с текущим объектом.
+     * @return Значение типа boolean - результат сравнения текущего объекта с переданным объектом.
+     */
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {
@@ -70,6 +77,11 @@ public abstract class Model implements Serializable {
         return (this.toEquals().equals(other.toEquals()));
     }
 
+    /**
+     * Возвращает хеш код объекта. Переопределенный метод родительского класса {@link Object}.
+     *
+     * @return Значение типа int - уникальный номер объекта.
+     */
     @Override
     public int hashCode() {
         return id != null ? id.hashCode() : toString().hashCode();
@@ -79,6 +91,8 @@ public abstract class Model implements Serializable {
      * Генерирует строку для конечного сравнения объектов в методе equals().
      * Что бы в дочернем классе не переопределять весь метод equals(), можно
      * переопределить тьлько этот метод.
+     *
+     * @return Значение типа {@link String} - результат работы метода toString().
      */
     public String toEquals() {
         return toString();
@@ -86,6 +100,9 @@ public abstract class Model implements Serializable {
 
     /**
      * Возвращает рандомную строку из набор символов и длинны по-умолчанию.
+     *
+     * @return Значение типа {@link String} - рандомная строка из набора
+     * символов CODE_PATTERN длиной {@value CODE_LENGTH}.
      */
     public static String createRandomString() {
         return createRandomString(CODE_PATTERN, CODE_LENGTH);
@@ -93,6 +110,10 @@ public abstract class Model implements Serializable {
 
     /**
      * Возвращает рандомную строку используя набор символов pattern длиной length.
+     *
+     * @param pattern Набор вожможных для использованния символов.
+     * @param length  Длина возвращаемой строки.
+     * @return Значение типа {@link String} - рандомная строка из набора символов pattern длиной length.
      */
     public static String createRandomString(char[] pattern, int length) {
         StringBuilder builder = new StringBuilder();
@@ -109,6 +130,9 @@ public abstract class Model implements Serializable {
     /**
      * Конвертирует дату типа Date в строку используя для работы входящими параметрами
      * формат даты {@value DATE_PATTERN} и часовой пояс (@value TIME_ZONE} по-умолчанию.
+     *
+     * @param date Значение даты типа Date для обработки.
+     * @return Значение типа {@link String} - дата в виде строки.
      */
     public static String dateToString(Date date) {
         DateFormat dateFormat = new SimpleDateFormat(DATE_PATTERN);
@@ -119,6 +143,11 @@ public abstract class Model implements Serializable {
     /**
      * Конвертирует дату типа Date в строку используя для работы входящими параметрами
      * формат даты и часовой пояс.
+     *
+     * @param date       Значение даты типа Date для обработки.
+     * @param dateFormat Формат даты для обработки входного параметра date.
+     * @param timeZone   Часовой пояс для обработки входного параметра date.
+     * @return Значение типа {@link String} - дата в виде строки.
      */
     public static String dateToStringWithFormat(Date date, DateFormat dateFormat, TimeZone timeZone) {
         dateFormat.setTimeZone(timeZone);
@@ -137,6 +166,10 @@ public abstract class Model implements Serializable {
      * Конвертирует входящий список возращает лист только для чтений.
      * Если входной параметер - лист равен null или пустой,
      * тогда метод возвращает пустой список.
+     *
+     * @param list Входной объект коллекции для обработки.
+     * @param <T>  Возможный тип объектов в списке.
+     * @return Значение типа {@link List} - список только для чтения или пустой список.
      */
     public static <T> List<T> getUnmodifiableList(List<T> list) {
         return list == null || list.isEmpty() ? Collections.EMPTY_LIST : Collections.unmodifiableList(list);

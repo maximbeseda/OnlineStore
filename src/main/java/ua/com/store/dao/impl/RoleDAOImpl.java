@@ -16,6 +16,12 @@ import ua.com.store.repository.RoleRepository;
  * Класс помечена аннотацией @Repository (наследник Spring'овой аннотации @Component).
  * Это позволяет Spring автоматически зарегестрировать компонент в своём контексте
  * для последующей инъекции.
+ *
+ * @author Максим Беседа
+ * @see DataDAOImpl
+ * @see RoleDAO
+ * @see Role
+ * @see RoleRepository
  */
 @Repository
 public class RoleDAOImpl extends DataDAOImpl<Role> implements RoleDAO {
@@ -28,6 +34,9 @@ public class RoleDAOImpl extends DataDAOImpl<Role> implements RoleDAO {
      * Конструктор для инициализации основных переменных.
      * Помечаный аннотацией @Autowired, которая позволит Spring
      * автоматически инициализировать объект.
+     *
+     * @param repository Реализация репозитория {@link RoleRepository}
+     *                   для работы ролей пользователей с базой данных.
      */
     @Autowired
     public RoleDAOImpl(RoleRepository repository) {
@@ -38,6 +47,8 @@ public class RoleDAOImpl extends DataDAOImpl<Role> implements RoleDAO {
     /**
      * Добавляет роль в базу даных по названию, которое может принимать
      * одно из значений перечисления {@link RoleEnum}.
+     *
+     * @param title Название роли.
      */
     @Override
     public void add(RoleEnum title, String description) {
@@ -47,6 +58,9 @@ public class RoleDAOImpl extends DataDAOImpl<Role> implements RoleDAO {
     /**
      * Возвращает роль из базы даных по названию, которое может принимать
      * одно из значений перечисления {@link RoleEnum}.
+     *
+     * @param title Название роли.
+     * @return Объект класса {@link Role} - роль с уникальным названием.
      */
     @Override
     public Role get(RoleEnum title) {
@@ -55,6 +69,8 @@ public class RoleDAOImpl extends DataDAOImpl<Role> implements RoleDAO {
 
     /**
      * Возвращает из базы даных роль по-умолчанию.
+     *
+     * @return Объект класса {@link Role} - роль по-умолчание.
      */
     @Override
     public Role getDefault() {
@@ -64,6 +80,8 @@ public class RoleDAOImpl extends DataDAOImpl<Role> implements RoleDAO {
     /**
      * Удаляет роль из базы даных по названию, которое может принимать одно
      * из значений перечисления {@link RoleEnum}.
+     *
+     * @param title Название роли.
      */
     @Override
     public void remove(RoleEnum title) {

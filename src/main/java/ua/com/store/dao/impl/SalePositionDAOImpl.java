@@ -15,6 +15,12 @@ import ua.com.store.repository.SalePositionRepository;
  * Класс помечена аннотацией @Repository (наследник Spring'овой аннотации @Component).
  * Это позволяет Spring автоматически зарегестрировать компонент в своём контексте
  * для последующей инъекции.
+ *
+ * @author Максим Беседа
+ * @see DataDAOImpl
+ * @see SalePositionDAO
+ * @see SalePosition
+ * @see SalePositionRepository
  */
 @Repository
 public class SalePositionDAOImpl extends DataDAOImpl<SalePosition> implements SalePositionDAO {
@@ -22,6 +28,9 @@ public class SalePositionDAOImpl extends DataDAOImpl<SalePosition> implements Sa
      * Конструктор для инициализации основных переменных.
      * Помечаный аннотацией @Autowired, которая позволит Spring
      * автоматически инициализировать объект.
+     *
+     * @param repository Реализация репозитория {@link SalePositionRepository}
+     *                   для работы торговых позиций с базой данных.
      */
     @Autowired
     public SalePositionDAOImpl(SalePositionRepository repository) {

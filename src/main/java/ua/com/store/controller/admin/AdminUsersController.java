@@ -23,23 +23,27 @@ import ua.com.store.service.UserService;
  * Методы класса работают с объектом, возвращенным handleRequest методом, является
  * типом {@link ModelAndView}, который агрегирует все параметры модели и имя отображения.
  * Этот тип представляет Model и View в MVC шаблоне.
+ *
+ * @author Максим Беседа
+ * @see User
+ * @see UserService
  */
 @Controller
 @RequestMapping(value = "/admin")
 public class AdminUsersController {
-    /**
-     * Объект сервиса для работы с пользователями.
-     */
+
+    /** Объект сервиса для работы с пользователями. */
     private UserService userService;
 
-    /**
-     * Объект сервиса для работы с ролями пользователей.
-     */
+    /** Объект сервиса для работы с ролями пользователей. */
     private RoleService roleService;
 
     /**
      * Конструктор для инициализации основных переменных контроллера пользователями.
      * Помечен аннотацией @Autowired, которая позволит Spring автоматически инициализировать объекты.
+     *
+     * @param userService Объект сервиса для работы с пользователями.
+     * @param roleService Объект сервиса для работы с ролями пользователей.
      */
     @Autowired
     public AdminUsersController(UserService userService, RoleService roleService) {
@@ -51,6 +55,9 @@ public class AdminUsersController {
     /**
      * Возвращает всех пользователей на страницу "admin/user/all".
      * URL запроса "/admin/users", метод GET.
+     *
+     * @param modelAndView Объект класса {@link ModelAndView}.
+     * @return Объект класса {@link ModelAndView}.
      */
     @RequestMapping(value = "/users", method = RequestMethod.GET)
     public ModelAndView viewAllPersonnel(ModelAndView modelAndView) {
@@ -65,6 +72,10 @@ public class AdminUsersController {
     /**
      * Возвращает пользователя с уникальным кодом id на страницу "admin/user/one".
      * URL запроса "/admin/view_user_{id}", метод GET.
+     *
+     * @param id           Код категории, которою нужно вернуть.
+     * @param modelAndView Объект класса {@link ModelAndView}.
+     * @return Объект класса {@link ModelAndView}.
      */
     @RequestMapping(value = "/view_user_{id}", method = RequestMethod.GET)
     public ModelAndView viewUser(@PathVariable(value = "id") long id, ModelAndView modelAndView) {
@@ -79,6 +90,9 @@ public class AdminUsersController {
     /**
      * Возвращает страницу "admin/user/add" для добавления нового пользователе, члена персонала
      * (администратора или менеджера). URL запроса "/admin/add_user", метод GET.
+     *
+     * @param modelAndView Объект класса {@link ModelAndView}.
+     * @return Объект класса {@link ModelAndView}.
      */
     @RequestMapping(value = "/add_user", method = RequestMethod.GET)
     public ModelAndView getAddUserPage(ModelAndView modelAndView) {
@@ -91,6 +105,19 @@ public class AdminUsersController {
     /**
      * Сохраняет нового пользователя по входящим параметрам и перенаправляет по запросу "/admin/users".
      * URL запроса "/admin/save_user", метод POST.
+     *
+     * @param name         Имя нового пользователя.
+     * @param roleId       Код роли пользователя.
+     * @param username     Логин пользователя для входа в аккаунт на сайте.
+     * @param password     Пароль пользователя для входа в аккаунт на сайте.
+     * @param email        Электронная почта пользователя.
+     * @param phone        Номер телефона пользователя.
+     * @param vkontakte    Ссылка на страничку в соц. сети "ВКонтакте" пользователя.
+     * @param facebook     Ссылка на страничку в соц. сети "Facebook" пользователя.
+     * @param skype        Логин пользователя в месенджере "Skype".
+     * @param description  Описание пользователя.
+     * @param modelAndView Объект класса {@link ModelAndView}.
+     * @return Объект класса {@link ModelAndView}.
      */
     @RequestMapping(value = "/save_user", method = RequestMethod.POST)
     public ModelAndView saveUser(@RequestParam String name,
@@ -115,6 +142,8 @@ public class AdminUsersController {
 
     /**
      * Возвращает исключение WrongInformationException, если обратится по запросу "/save_user" методом GET.
+     *
+     * @throws WrongInformationException Бросает исключение, если обратится к этому методу GET.
      */
     @RequestMapping(value = "/save_user", method = RequestMethod.GET)
     public void saveUser() throws WrongInformationException {
@@ -124,6 +153,10 @@ public class AdminUsersController {
     /**
      * Возвращает страницу "admin/user/edit" для редактирование пользователя с уникальным кодом,
      * который совпадает с параметром id. URL запроса "/admin/edit_user_{id}", метод GET.
+     *
+     * @param id           Код пользователя, информацию о котором нужно отредактировать.
+     * @param modelAndView Объект класса {@link ModelAndView}.
+     * @return Объект класса {@link ModelAndView}.
      */
     @RequestMapping(value = "/edit_user_{id}", method = RequestMethod.GET)
     public ModelAndView getEditUserPage(@PathVariable(value = "id") long id, ModelAndView modelAndView) {
@@ -137,6 +170,20 @@ public class AdminUsersController {
     /**
      * Обновляет пользователя по входящим параметрам и перенаправляет по запросу "/admin/view_user_{id}".
      * URL запроса "/admin/update_user", метод POST.
+     *
+     * @param id           Код пользователя для обновления.
+     * @param name         Имя пользователя.
+     * @param roleId       Код роли пользователя.
+     * @param username     Логин пользователя для входа в аккаунт на сайте.
+     * @param password     Пароль пользователя для входа в аккаунт на сайте.
+     * @param email        Электронная почта пользователя.
+     * @param phone        Номер телефона пользователя.
+     * @param vkontakte    Ссылка на страничку в соц. сети "ВКонтакте" пользователя.
+     * @param facebook     Ссылка на страничку в соц. сети "Facebook" пользователя.
+     * @param skype        Логин пользователя в месенджере "Skype".
+     * @param description  Описание пользователя.
+     * @param modelAndView Объект класса {@link ModelAndView}.
+     * @return Объект класса {@link ModelAndView}.
      */
     @RequestMapping(value = "/update_user", method = RequestMethod.POST)
     public ModelAndView updateUser(@RequestParam long id,
@@ -162,6 +209,8 @@ public class AdminUsersController {
 
     /**
      * Возвращает исключение WrongInformationException, если обратится по запросу "/update_user" методом GET.
+     *
+     * @throws WrongInformationException Бросает исключение, если обратится к этому методу GET.
      */
     @RequestMapping(value = "/update_user", method = RequestMethod.GET)
     public void updateUser() throws WrongInformationException {
@@ -172,6 +221,10 @@ public class AdminUsersController {
      * Удаляет пользователя с уникальным кодом, который совпадает с входящим параметром id,
      * и перенаправляет по запросу "/admin/users".
      * URL запроса "/delete_user_{id}", метод GET.
+     *
+     * @param id           Код пользвателя, которого нужно удалить.
+     * @param modelAndView Объект класса {@link ModelAndView}.
+     * @return Объект класса {@link ModelAndView}.
      */
     @RequestMapping(value = "/delete_user_{id}", method = RequestMethod.GET)
     public ModelAndView deleteUser(@PathVariable(value = "id") long id, ModelAndView modelAndView) {
@@ -185,6 +238,9 @@ public class AdminUsersController {
     /**
      * Удаляет всех пользователей и перенаправляет по запросу "/admin/users".
      * URL запроса "/delete_all_users", метод GET.
+     *
+     * @param modelAndView Объект класса {@link ModelAndView}.
+     * @return Объект класса {@link ModelAndView}.
      */
     @RequestMapping(value = "/delete_all_users", method = RequestMethod.GET)
     public ModelAndView deleteAll(ModelAndView modelAndView) {

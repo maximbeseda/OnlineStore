@@ -21,43 +21,37 @@ import java.util.Properties;
  * Класс сервисного слоя реализует методы интерфейса {@link SenderService}
  * для работы с электронной почтой. Также реализует интерфейс {@link Runnable},
  * то есть можно отправлять сообщения в отдельном потоке.
+ *
+ * @author Максим Беседа
+ * @see SenderService
+ * @see User
+ * @see Order
  */
 @Service
 public class SenderServiceImpl implements SenderService, Runnable {
-    /**
-     * Объект сервиса для работы с пользователями.
-     */
+    /** Объект сервиса для работы с пользователями. */
     private UserService userService;
 
-    /**
-     * Стандартная кодировка сообщений.
-     */
+    /** Стандартная кодировка сообщений. */
     private static final String CHARSET = "UTF-8";
 
-    /**
-     * Стандартная кодировка сообщений.
-     */
+    /** Стандартная кодировка сообщений. */
     private static final String ENCODING = "Q";
 
-    /**
-     * Администратор сайта, от имени которого будут отправлятся
-     * сообщения менеджерам.
-     */
+    /** Администратор сайта, от имени которого будут отправлятся сообщения менеджерам. */
     private User admin;
 
-    /**
-     * Список менеджеров, которым будет приходить сообщение о заказе.
-     */
+    /** Список менеджеров, которым будет приходить сообщение о заказе. */
     private List<User> managers;
 
-    /**
-     * Заказ, информация о котором будет приходить на почту менеджерам.
-     */
+    /** Заказ, информация о котором будет приходить на почту менеджерам. */
     private Order order;
 
     /**
      * Конструктор для инициализации основных переменных сервиса.
      * Помечаный аннотацией @Autowired, которая позволит Spring автоматически инициализировать объект.
+     *
+     * @param userService Реализация интерфейса для работы з пользователями.
      */
     @Autowired
     public SenderServiceImpl(UserService userService) {
@@ -67,6 +61,8 @@ public class SenderServiceImpl implements SenderService, Runnable {
     /**
      * Отсылает информацию о заказе менеджерам на электронную почту.
      * Запускает отдельный поток.
+     *
+     * @param order Заказ для отправке менеджерам.
      */
     @Override
     public void send(Order order) {
@@ -118,6 +114,8 @@ public class SenderServiceImpl implements SenderService, Runnable {
 
     /**
      * Возвращает настройки протокола TLS (Transport Layer Security) для отправки сообщения.
+     *
+     * @return Объект класса {@link Properties} - TLS настройки.
      */
     @Override
     public Properties getTLSProperties() {
@@ -131,6 +129,8 @@ public class SenderServiceImpl implements SenderService, Runnable {
 
     /**
      * Возвращает настройки протокола SSL (Secure Sockets Layer) для отправки сообщения.
+     *
+     * @return Объект класса {@link Properties} - SSL настройки.
      */
     @Override
     public Properties getSSLProperties() {

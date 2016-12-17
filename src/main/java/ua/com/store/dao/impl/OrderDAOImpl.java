@@ -15,6 +15,12 @@ import ua.com.store.repository.OrderRepository;
  * Класс помечена аннотацией @Repository (наследник Spring'овой аннотации @Component).
  * Это позволяет Spring автоматически зарегестрировать компонент в своём контексте
  * для последующей инъекции.
+ *
+ * @author Максим Беседа
+ * @see DataDAOImpl
+ * @see OrderDAO
+ * @see Order
+ * @see OrderRepository
  */
 @Repository
 public class OrderDAOImpl extends DataDAOImpl<Order> implements OrderDAO {
@@ -27,6 +33,9 @@ public class OrderDAOImpl extends DataDAOImpl<Order> implements OrderDAO {
      * Конструктор для инициализации основных переменных сервиса.
      * Помечаный аннотацией @Autowired, которая позволит Spring
      * автоматически инициализировать объект.
+     *
+     * @param repository Реализация репозитория {@link OrderRepository}
+     *                   для работы категорий с базой данных.
      */
     @Autowired
     public OrderDAOImpl(OrderRepository repository) {
@@ -37,6 +46,9 @@ public class OrderDAOImpl extends DataDAOImpl<Order> implements OrderDAO {
     /**
      * Возвращает заказ из базы даных, у которого совпадает уникальный номером
      * с значением входящего параметра.
+     *
+     * @param number Номер заказа для возврата.
+     * @return Объект класса {@link Order} - заказ с уникальным номером.
      */
     @Override
     public Order get(String number) {
@@ -46,6 +58,8 @@ public class OrderDAOImpl extends DataDAOImpl<Order> implements OrderDAO {
     /**
      * Удаляет заказ из базы даных, у которого совпадает уникальный номером
      * с значением входящего параметра.
+     *
+     * @param number Номер заказа для удаление.
      */
     @Override
     public void remove(String number) {

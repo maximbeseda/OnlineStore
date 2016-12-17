@@ -24,6 +24,14 @@ import java.util.List;
  * Методы класса помечены аннотацией @Transactional - перед исполнением метода помеченного
  * данной аннотацией начинается транзакция, после выполнения метода транзакция коммитится,
  * при выбрасывании RuntimeException откатывается.
+ *
+ * @author Максим Беседа
+ * @see MainServiceImpl
+ * @see ProductService
+ * @see ProductDAO
+ * @see Product
+ * @see Category
+ * @see CategoryDAO
  */
 @Service
 public class ProductServiceImpl extends MainServiceImpl<Product> implements ProductService {
@@ -41,6 +49,9 @@ public class ProductServiceImpl extends MainServiceImpl<Product> implements Prod
      * Конструктор для инициализации основных переменных сервиса.
      * Помечаный аннотацией @Autowired, которая позволит Spring
      * автоматически инициализировать объект.
+     *
+     * @param productDAO  Реализация интерфейса {@link ProductDAO} для работы с товаров базой данных.
+     * @param categoryDAO Реализация интерфейса {@link CategoryDAO} для работы с категорий базой данных.
      */
     @Autowired
     public ProductServiceImpl(ProductDAO productDAO, CategoryDAO categoryDAO) {
@@ -135,6 +146,10 @@ public class ProductServiceImpl extends MainServiceImpl<Product> implements Prod
     /**
      * Возвращает список рандомных товаров, которые относятся к категории
      * с уникальным кодом id - входным параметром.
+     *
+     * @param size Количество товаров в списке.
+     * @param id   Код категории, товары которой будут возвращены.
+     * @return Объект типа {@link List} - список товаров.
      */
     @Override
     @Transactional(readOnly = true)
@@ -169,6 +184,9 @@ public class ProductServiceImpl extends MainServiceImpl<Product> implements Prod
 
     /**
      * Возвращает список рандомных товаров. Режим только для чтения.
+     *
+     * @param size Количество товаров в списке.
+     * @return Объект типа {@link List} - список товаров.
      */
     @Override
     @Transactional(readOnly = true)
@@ -254,6 +272,11 @@ public class ProductServiceImpl extends MainServiceImpl<Product> implements Prod
 
     /**
      * Возвращает список перемешаных товаров начиная с позиции start и заканчиваю позицеей end.
+     *
+     * @param products Список товаров для обработки.
+     * @param start    Начальная позиция выборки товаров из списка.
+     * @param end      Конечная позиция выборки товаров из списка.
+     * @return Объект типа {@link List} - список перемешаных товаров или пустой лист.
      */
     private static List<Product> getShuffleSubList(List<Product> products, int start, int end) {
         if (products == null || products.isEmpty() || start > products.size() || start > end || start < 0 || end < 0) {

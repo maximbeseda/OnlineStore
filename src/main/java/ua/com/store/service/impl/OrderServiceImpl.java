@@ -19,6 +19,12 @@ import ua.com.store.service.OrderService;
  * Методы класса помечены аннотацией @Transactional - перед исполнением метода помеченного
  * данной аннотацией начинается транзакция, после выполнения метода транзакция коммитится,
  * при выбрасывании RuntimeException откатывается.
+ *
+ * @author Максим Беседа
+ * @see MainServiceImpl
+ * @see OrderService
+ * @see Order
+ * @see OrderDAO
  */
 @Service
 public class OrderServiceImpl extends MainServiceImpl<Order> implements OrderService {
@@ -31,6 +37,8 @@ public class OrderServiceImpl extends MainServiceImpl<Order> implements OrderSer
      * Конструктор для инициализации основных переменных сервиса.
      * Помечаный аннотацией @Autowired, которая позволит Spring
      * автоматически инициализировать объект.
+     *
+     * @param dao Реализация интерфейса {@link OrderDAO} для работы категорий с базой данных.
      */
     @Autowired
     public OrderServiceImpl(OrderDAO dao) {

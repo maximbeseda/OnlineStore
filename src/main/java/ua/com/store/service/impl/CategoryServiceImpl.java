@@ -19,6 +19,12 @@ import ua.com.store.service.CategoryService;
  * Методы класса помечены аннотацией @Transactional - перед исполнением метода помеченного
  * данной аннотацией начинается транзакция, после выполнения метода транзакция коммитится,
  * при выбрасывании RuntimeException откатывается.
+ *
+ * @author Максим Беседа
+ * @see MainServiceImpl
+ * @see CategoryService
+ * @see Category
+ * @see CategoryDAO
  */
 @Service
 public class CategoryServiceImpl extends MainServiceImpl<Category> implements CategoryService {
@@ -31,6 +37,8 @@ public class CategoryServiceImpl extends MainServiceImpl<Category> implements Ca
      * Конструктор для инициализации основных переменных сервиса.
      * Помечаный аннотацией @Autowired, которая позволит Spring
      * автоматически инициализировать объект.
+     *
+     * @param dao Реализация интерфейса {@link CategoryDAO} для работы категорий с базой данных.
      */
     @Autowired
     public CategoryServiceImpl(CategoryDAO dao) {

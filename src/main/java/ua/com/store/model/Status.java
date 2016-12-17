@@ -10,13 +10,16 @@ import java.util.List;
  * Класс описывает сущность "Статус заказов", наследует класс {@link Model}.
  * Аннотация @Entity говорит о том что объекты этого класса будет обрабатываться hibernate.
  * Аннотация @Table(name = "statuses") указывает на таблицу "statuses", в которой будут храниться объекты.
+ *
+ * @author Максим Беседа
+ * @see StatusEnum
+ * @see Order
  */
 @Entity
 @Table(name = "Statuses")
 public class Status extends Model {
-    /**
-     * Номер версии класса необходимый для десериализации и сериализации.
-     */
+
+    /** Номер версии класса необходимый для десериализации и сериализации. */
     private static final long serialVersionUID = 1L;
 
     /**
@@ -27,9 +30,7 @@ public class Status extends Model {
     @Enumerated(EnumType.STRING)
     private StatusEnum title;
 
-    /**
-     * Описание товара. Значение поля сохраняется в колонке "description".
-     */
+    /** Описание товара. Значение поля сохраняется в колонке "description". */
     @Column(name = "description")
     private String description;
 
@@ -48,12 +49,24 @@ public class Status extends Model {
         description = "";
     }
 
+    /**
+     * Конструктор для инициализации основных переменных заказа.
+     *
+     * @param title       Название заказа, может принимать одно из значений перечисления {@link StatusEnum}.
+     * @param description Описание статуса.
+     */
     public Status(StatusEnum title, String description) {
         super();
         this.title = title;
         this.description = description;
     }
 
+    /**
+     * Возвращает описание статуса.
+     * Переопределенный метод родительского класса {@link Object}.
+     *
+     * @return Значение типа {@link String} - строка описание статуса (имя, описание).
+     */
     @Override
     public String toString() {
         return "Title: " + title.name() + "\nDescription: " + description;
@@ -61,6 +74,8 @@ public class Status extends Model {
 
     /**
      * Добавляет заказы в список текущего статуса.
+     *
+     * @param order Заказ, который имеет текущий статус.
      */
     public void addOrder(Order order) {
         orders.add(order);
@@ -68,6 +83,8 @@ public class Status extends Model {
 
     /**
      * Добавляет список заказов в список заказов orders.
+     *
+     * @param orders Список заказов, которые будут иметь текущий статус.
      */
     public void addOrders(List<Order> orders) {
         this.orders.addAll(orders);
@@ -75,6 +92,8 @@ public class Status extends Model {
 
     /**
      * Удаляет заказ из списка текущего статуса.
+     *
+     * @param order Заказ, у которого будет удаленен текущий статус.
      */
     public void removeOrder(Order order) {
         orders.remove(order);
@@ -82,6 +101,8 @@ public class Status extends Model {
 
     /**
      * Метод удаляет список заказов из списка orders.
+     *
+     * @param orders Список заказов, у которых будет удаленен текущий статус.
      */
     public void removeOrders(List<Order> orders) {
         this.orders.removeAll(orders);

@@ -15,6 +15,12 @@ import ua.com.store.repository.PhotoRepository;
  * Класс помечена аннотацией @Repository (наследник Spring'овой аннотации @Component).
  * Это позволяет Spring автоматически зарегестрировать компонент в своём контексте
  * для последующей инъекции.
+ *
+ * @author Максим Беседа
+ * @see DataDAOImpl
+ * @see PhotoDAO
+ * @see Photo
+ * @see PhotoRepository
  */
 @Repository
 public class PhotoDAOImpl extends DataDAOImpl<Photo> implements PhotoDAO {
@@ -27,6 +33,8 @@ public class PhotoDAOImpl extends DataDAOImpl<Photo> implements PhotoDAO {
      * Конструктор для инициализации основных переменных.
      * Помечаный аннотацией @Autowired, которая позволит Spring
      * автоматически инициализировать объект.
+     *
+     * @param repository Реализация репозитория {@link PhotoRepository} для работы изображений с базой данных.
      */
     @Autowired
     public PhotoDAOImpl(PhotoRepository repository) {
@@ -37,6 +45,9 @@ public class PhotoDAOImpl extends DataDAOImpl<Photo> implements PhotoDAO {
     /**
      * Возвращает объект-изображение из базы даных, у которого совпадает уникальное
      * название с значением входящего параметра.
+     *
+     * @param title Название объекта-изображения для возврата.
+     * @return Объект класса {@link Photo} - объекта-изображение.
      */
     @Override
     public Photo get(String title) {
@@ -46,6 +57,8 @@ public class PhotoDAOImpl extends DataDAOImpl<Photo> implements PhotoDAO {
     /**
      * Удаляет объект-изображение из базы даных, у которого совпадает уникальное
      * название с значением входящего параметра.
+     *
+     * @param title Название объекта-изображения для удаления.
      */
     @Override
     public void remove(String title) {

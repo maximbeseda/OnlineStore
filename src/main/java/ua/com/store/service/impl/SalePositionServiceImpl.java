@@ -16,6 +16,12 @@ import ua.com.store.service.SalePositionService;
  * Методы класса помечены аннотацией @Transactional - перед исполнением метода помеченного
  * данной аннотацией начинается транзакция, после выполнения метода транзакция коммитится,
  * при выбрасывании RuntimeException откатывается.
+ *
+ * @author Максим Беседа
+ * @see MainServiceImpl
+ * @see SalePositionService
+ * @see SalePosition
+ * @see SalePositionDAO
  */
 @Service
 public class SalePositionServiceImpl extends MainServiceImpl<SalePosition> implements SalePositionService {
@@ -24,6 +30,8 @@ public class SalePositionServiceImpl extends MainServiceImpl<SalePosition> imple
      * Конструктор для инициализации основных переменных сервиса.
      * Помечаный аннотацией @Autowired, которая позволит Spring
      * автоматически инициализировать объект.
+     *
+     * @param dao Реализация интерфейса {@link SalePositionDAO} для работы торговых позиций с базой данных.
      */
     @Autowired
     public SalePositionServiceImpl(SalePositionDAO dao) {

@@ -2,6 +2,8 @@ package ua.com.store.exception;
 
 /**
  * Исключение генерируется, если данные не найдены в базе данных.
+ *
+ * @author Максим Беседа
  */
 public class BadRequestException extends RuntimeException {
 

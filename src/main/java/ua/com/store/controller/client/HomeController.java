@@ -22,47 +22,53 @@ import java.util.ArrayList;
  * Методы класса работают с объектом, возвращенным handleRequest методом, является
  * типом {@link ModelAndView}, который агрегирует все параметры модели и имя отображения.
  * Этот тип представляет Model и View в MVC шаблоне.
+ *
+ * @author Максим Беседа
+ * @see Product
+ * @see Category
+ * @see Order
+ * @see ShoppingCart
+ * @see ProductService
+ * @see CategoryService
+ * @see OrderService
+ * @see ShoppingCartService
+ * @see SenderService
  */
 @Controller
 public class HomeController {
-    /**
-     * Объект сервиса для работы с товарами.
-     */
+
+    /** Объект сервиса для работы с товарами. */
     private ProductService productService;
 
-    /**
-     * Объект сервиса для работы с категориями товаров.
-     */
+    /** Объект сервиса для работы с категориями товаров. */
     private CategoryService categoryService;
 
-    /**
-     * Объект сервиса для работы с торговой корзиной.
-     */
+    /** Объект сервиса для работы с торговой корзиной. */
     private ShoppingCartService shoppingCartService;
 
-    /**
-     * Объект сервиса для работы с заказами.
-     */
+    /** Объект сервиса для работы с заказами. */
     private OrderService orderService;
 
-    /**
-     * Объект сервиса для работы с статусами заказов.
-     */
+    /** Объект сервиса для работы с статусами заказов. */
     private StatusService statusService;
 
-    /**
-     * Объект сервиса для работы с ролями пользователей.
-     */
+    /** Объект сервиса для работы с ролями пользователей. */
     private RoleService roleService;
 
-    /**
-     * Объект сервиса для работы с товарами.
-     */
+    /** Объект сервиса для работы с товарами. */
     private SenderService senderService;
 
     /**
      * Конструктор для инициализации основных переменных контроллера главных страниц сайта.
      * Помечен аннотацией @Autowired, которая позволит Spring автоматически инициализировать объекты.
+     *
+     * @param productService      Объект сервиса для работы с товарами.
+     * @param categoryService     Объект сервиса для работы с категориями товаров.
+     * @param shoppingCartService Объект сервиса для работы с торговой корзиной.
+     * @param orderService        Объект сервиса для работы с заказами.
+     * @param statusService       Объект сервиса для работы с статусами заказов.
+     * @param roleService         Объект сервиса для работы с ролями пользователей.
+     * @param senderService       Объект сервиса для работы с товарами.
      */
     @Autowired
     public HomeController(ProductService productService, CategoryService categoryService,
@@ -83,6 +89,9 @@ public class HomeController {
      * Возвращает главную cтраницу сайта "client/home". Для формирования страницы с базы подгружаются
      * категории товаров, 12 рандомных товаров и количество товаров в корзине.
      * URL запроса {"/", "/index"}, метод GET.
+     *
+     * @param modelAndView Объект класса {@link ModelAndView}.
+     * @return Объект класса {@link ModelAndView}.
      */
     @RequestMapping(value = {"/", "/index"}, method = RequestMethod.GET)
     public ModelAndView home(ModelAndView modelAndView) {
@@ -96,6 +105,10 @@ public class HomeController {
     /**
      * Возвращает страницу "client/category" с товарами, которые пренадлежат категории с url.
      * URL запроса "/category_{url}", метод GET.
+     *
+     * @param url          URL категории, товары которой нужно вернуть на странице.
+     * @param modelAndView Объект класса {@link ModelAndView}.
+     * @return Объект класса {@link ModelAndView}.
      */
     @RequestMapping(value = "/category_{url}", method = RequestMethod.GET)
     public ModelAndView viewProductsInCategory(@PathVariable("url") String url, ModelAndView modelAndView) {
@@ -109,6 +122,9 @@ public class HomeController {
     /**
      * Возвращает страницу "client/products" с всема товарами.
      * URL запроса "/all_products", метод GET.
+     *
+     * @param modelAndView Объект класса {@link ModelAndView}.
+     * @return Объект класса {@link ModelAndView}.
      */
     @RequestMapping(value = "/all_products", method = RequestMethod.GET)
     public ModelAndView viewAllProducts(ModelAndView modelAndView) {
@@ -122,6 +138,10 @@ public class HomeController {
      * Возвращает страницу "client/product" с 1-м товаром с уникальним URL, который
      * совпадает с входящим параметром url. URL запроса "/product_{url}", метод GET.
      * В запросе в параметре url можно передавать как URL так и артикль товара.
+     *
+     * @param url          URL или артикль товара, который нужно вернуть на страницу.
+     * @param modelAndView Объект класса {@link ModelAndView}.
+     * @return Объект класса {@link ModelAndView}.
      */
     @RequestMapping(value = "/product_{url}", method = RequestMethod.GET)
     public ModelAndView viewProduct(@PathVariable("url") String url, ModelAndView modelAndView) {
@@ -146,6 +166,9 @@ public class HomeController {
     /**
      * Возвращает страницу "client/cart" - страница корзины с торговыми позициями, которие сделал клиент.
      * URL запроса "/cart", метод GET.
+     *
+     * @param modelAndView Объект класса {@link ModelAndView}.
+     * @return Объект класса {@link ModelAndView}.
      */
     @RequestMapping(value = "/cart", method = RequestMethod.GET)
     public ModelAndView viewCart(ModelAndView modelAndView) {
@@ -159,6 +182,10 @@ public class HomeController {
     /**
      * Добавляет товар с уникальным кодом id в корзину и перенаправляет по запросу "/cart".
      * URL запроса "/cart_add", метод POST.
+     *
+     * @param id           Код товара, который нужно добавить в корзину.
+     * @param modelAndView Объект класса {@link ModelAndView}.
+     * @return Объект класса {@link ModelAndView}.
      */
     @RequestMapping(value = "/cart_add", method = RequestMethod.POST)
     public ModelAndView addProductToCart(@RequestParam long id, ModelAndView modelAndView) {
@@ -170,6 +197,8 @@ public class HomeController {
 
     /**
      * Возвращает исключение WrongInformationException, если обратится по запросу "/cart_add" методом GET.
+     *
+     * @throws WrongInformationException Бросает исключение, если обратится к этому методу GET.
      */
     @RequestMapping(value = "/cart_add", method = RequestMethod.GET)
     public void addProductToCart() throws WrongInformationException {
@@ -179,6 +208,11 @@ public class HomeController {
     /**
      * Быстрое добавления товара с уникальным номером id в корзину и перенаправление
      * по запросу входящего параметра url. URL запроса "/cart_add_quickly", метод POST.
+     *
+     * @param id           Код товара, который нужно добавить в корзину.
+     * @param url          URL запроса для перенаправления.
+     * @param modelAndView Объект класса {@link ModelAndView}.
+     * @return Объект класса {@link ModelAndView}.
      */
     @RequestMapping(value = "/cart_add_quickly", method = RequestMethod.POST)
     public ModelAndView addProductToCartQuickly(@RequestParam long id,
@@ -192,6 +226,8 @@ public class HomeController {
 
     /**
      * Возвращает исключение WrongInformationException, если обратится по запросу "/cart_add_quickly" методом GET.
+     *
+     * @throws WrongInformationException Бросает исключение, если обратится к этому методу GET.
      */
     @RequestMapping(value = "/cart_add_quickly", method = RequestMethod.GET)
     public void addProductToCartQuickly() throws WrongInformationException {
@@ -201,6 +237,9 @@ public class HomeController {
     /**
      * Очищает корзину от торгвых позиции и перенаправление по запросу "/cart".
      * URL запроса "/cart_clear", метод GET.
+     *
+     * @param modelAndView Объект класса {@link ModelAndView}.
+     * @return Объект класса {@link ModelAndView}.
      */
     @RequestMapping(value = "/cart_clear", method = RequestMethod.GET)
     public ModelAndView clearCart(ModelAndView modelAndView) {
@@ -213,6 +252,12 @@ public class HomeController {
      * Оформляет и сохраняет заказ клиента, возвращает страницу "client/checkout".
      * Если корзина пуста, по перенаправляет на главную страницу.
      * URL запроса "/checkout", метод POST.
+     *
+     * @param name         Имя клиента, сжелавшего заказ.
+     * @param email        Электронная почта клиента.
+     * @param phone        Номер телефона клиента.
+     * @param modelAndView Объект класса {@link ModelAndView}.
+     * @return Объект класса {@link ModelAndView}.
      */
     @RequestMapping(value = "/checkout", method = RequestMethod.POST)
     public ModelAndView viewCheckout(@RequestParam(value = "user_name") String name,
@@ -245,6 +290,9 @@ public class HomeController {
 
     /**
      * Перенаправляет по запросу "/cart", если обратится по запросу "/checkout" методом GET.
+     *
+     * @param modelAndView Объект класса {@link ModelAndView}.
+     * @return Объект класса {@link ModelAndView}.
      */
     @RequestMapping(value = "/checkout", method = RequestMethod.GET)
     public ModelAndView viewCheckout(ModelAndView modelAndView) {
@@ -255,6 +303,8 @@ public class HomeController {
     /**
      * Возвращает исключение ForbiddenException, если пользователь обращается к запросам, к которым
      * он не имеет права доступа (роли).
+     *
+     * @throws ForbiddenException Бросает исключение в случае отсутствия прав доступа.
      */
     @RequestMapping(value = "/forbidden_exception", method = RequestMethod.GET)
     public void getForbiddenException() throws ForbiddenException {

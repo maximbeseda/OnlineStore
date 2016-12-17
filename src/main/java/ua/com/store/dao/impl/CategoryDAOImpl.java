@@ -15,6 +15,12 @@ import ua.com.store.repository.CategoryRepository;
  * Класс помечена аннотацией @Repository (наследник Spring'овой аннотации @Component).
  * Это позволяет Spring автоматически зарегестрировать компонент в своём контексте
  * для последующей инъекции.
+ *
+ * @author Максим Беседа
+ * @see DataDAOImpl
+ * @see CategoryDAO
+ * @see Category
+ * @see CategoryRepository
  */
 @Repository
 public class CategoryDAOImpl extends DataDAOImpl<Category> implements CategoryDAO {
@@ -27,6 +33,9 @@ public class CategoryDAOImpl extends DataDAOImpl<Category> implements CategoryDA
      * Конструктор для инициализации основных переменных.
      * Помечаный аннотацией @Autowired, которая позволит Spring
      * автоматически инициализировать объект.
+     *
+     * @param repository Реализация интерфейса {@link CategoryRepository}
+     *                   для работы категорий с базой данных.
      */
     @Autowired
     public CategoryDAOImpl(CategoryRepository repository) {
@@ -36,6 +45,9 @@ public class CategoryDAOImpl extends DataDAOImpl<Category> implements CategoryDA
 
     /**
      * Возвращает категорию из базы данных, у которой совпадает параметр url.
+     *
+     * @param url URL категории для возврата.
+     * @return Объект класса {@link Category} - категория с уникальным url полем.
      */
     @Override
     public Category get(String url) {
@@ -44,6 +56,8 @@ public class CategoryDAOImpl extends DataDAOImpl<Category> implements CategoryDA
 
     /**
      * Удаляет категрию из базы даных, у которого совпадает поле url.
+     *
+     * @param url URL категории для удаления.
      */
     @Override
     public void remove(String url) {

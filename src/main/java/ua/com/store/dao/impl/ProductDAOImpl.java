@@ -17,6 +17,12 @@ import java.util.List;
  * Класс помечена аннотацией @Repository (наследник Spring'овой аннотации @Component).
  * Это позволяет Spring автоматически зарегестрировать компонент в своём контексте
  * для последующей инъекции.
+ *
+ * @author Максим Беседа
+ * @see DataDAOImpl
+ * @see ProductDAO
+ * @see Product
+ * @see ProductRepository
  */
 @Repository
 public class ProductDAOImpl extends DataDAOImpl<Product> implements ProductDAO {
@@ -29,6 +35,9 @@ public class ProductDAOImpl extends DataDAOImpl<Product> implements ProductDAO {
      * Конструктор для инициализации основных переменных.
      * Помечаный аннотацией @Autowired, которая позволит Spring
      * автоматически инициализировать объект.
+     *
+     * @param repository Реализация репозитория {@link ProductRepository}
+     *                   для работы с товаров базой данных.
      */
     @Autowired
     public ProductDAOImpl(ProductRepository repository) {
@@ -38,6 +47,9 @@ public class ProductDAOImpl extends DataDAOImpl<Product> implements ProductDAO {
 
     /**
      * Возвращает товар из базы данных, у которого совпадает параметр url.
+     *
+     * @param url URL товара для возврата.
+     * @return Объект класса {@link Product} - товара с уникальным url полем.
      */
     @Override
     public Product getByUrl(String url) {
@@ -47,6 +59,9 @@ public class ProductDAOImpl extends DataDAOImpl<Product> implements ProductDAO {
     /**
      * Возвращает товар из базы даных, у которого совпадает уникальный
      * артикль с значением входящего параметра.
+     *
+     * @param article Артикль товара для возврата.
+     * @return Объект класса {@link Product} - товара с уникальным артиклем.
      */
     @Override
     public Product getByArticle(int article) {
@@ -55,6 +70,8 @@ public class ProductDAOImpl extends DataDAOImpl<Product> implements ProductDAO {
 
     /**
      * Удаляет товар из базы данных, у которого совпадает параметр url.
+     *
+     * @param url URL товара для удаления.
      */
     @Override
     public void removeByUrl(String url) {
@@ -63,6 +80,8 @@ public class ProductDAOImpl extends DataDAOImpl<Product> implements ProductDAO {
 
     /**
      * Удаляет товар из базы данных, у которого совпадает параметр article.
+     *
+     * @param article Артикль товара для удаления.
      */
     @Override
     public void removeByArticle(int article) {
@@ -72,6 +91,8 @@ public class ProductDAOImpl extends DataDAOImpl<Product> implements ProductDAO {
     /**
      * Удаляет товары из базы даных, которые пренадлежат категории
      * с уникальным кодом - входным параметром.
+     *
+     * @param id Уникальный код категории, товары котрой будут удалены.
      */
     @Override
     public void removeByCategoryId(long id) {
@@ -82,6 +103,9 @@ public class ProductDAOImpl extends DataDAOImpl<Product> implements ProductDAO {
     /**
      * Возвращает список товаров, которые пренадлежат категории
      * с уникальным кодом - входным параметром.
+     *
+     * @param id Уникальный код категории.
+     * @return Объект типа List - список товаров.
      */
     @Override
     public List<Product> getListByCategoryId(long id) {

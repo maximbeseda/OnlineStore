@@ -27,6 +27,12 @@ import java.util.List;
  * Методы класса помечены аннотацией @Transactional - перед исполнением метода помеченного
  * данной аннотацией начинается транзакция, после выполнения метода транзакция коммитится,
  * при выбрасывании RuntimeException откатывается.
+ *
+ * @author Максим Беседа
+ * @see MainServiceImpl
+ * @see UserService
+ * @see User
+ * @see UserDAO
  */
 @Service
 public class UserServiceImpl extends MainServiceImpl<User> implements UserService, UserDetailsService {
@@ -39,6 +45,8 @@ public class UserServiceImpl extends MainServiceImpl<User> implements UserServic
      * Конструктор для инициализации основных переменных сервиса.
      * Помечаный аннотацией @Autowired, которая позволит Spring
      * автоматически инициализировать объект.
+     *
+     * @param dao Реализация интерфейса {@link UserDAO} для работы пользователей с базой данных.
      */
     @Autowired
     public UserServiceImpl(UserDAO dao) {
@@ -112,6 +120,8 @@ public class UserServiceImpl extends MainServiceImpl<User> implements UserServic
 
     /**
      * Возвращает список всех администраторов сайта. Режим только для чтения.
+     *
+     * @return Объект типа {@link List} - список администраторов.
      */
     @Override
     @Transactional(readOnly = true)
@@ -121,6 +131,8 @@ public class UserServiceImpl extends MainServiceImpl<User> implements UserServic
 
     /**
      * Возвращает список всех менеджеров сайта. Режим только для чтения.
+     *
+     * @return Объект типа {@link List} - список менеджеров.
      */
     @Override
     @Transactional(readOnly = true)
@@ -130,6 +142,8 @@ public class UserServiceImpl extends MainServiceImpl<User> implements UserServic
 
     /**
      * Возвращает список всех клиентов сайта. Режим только для чтения.
+     *
+     * @return Объект типа {@link List} - список клиентов.
      */
     @Override
     @Transactional(readOnly = true)
@@ -139,6 +153,8 @@ public class UserServiceImpl extends MainServiceImpl<User> implements UserServic
 
     /**
      * Возвращает список персонала сайта. Режим только для чтения.
+     *
+     * @return Объект типа {@link List} - список персонала.
      */
     @Override
     @Transactional(readOnly = true)

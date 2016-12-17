@@ -12,6 +12,19 @@ import ua.com.store.model.Model;
  * Spring Data должен предоставить реализацию методов для работы с этой
  * сущностью (обязательно). Второй Generic E должен быть оберточным типом
  * того типа которым есть id нашей сущности (обязательно).
+ *
+ * @author Максим Беседа
+ * @param <T> Тип (класс) сущности.
+ * @param <E> Тип id сущности.
+ * @see CategoryRepository
+ * @see OrderRepository
+ * @see PhotoRepository
+ * @see ProductRepository
+ * @see RoleRepository
+ * @see SalePositionRepository
+ * @see StatusRepository
+ * @see UserRepository
+ * @see Model
  */
 public interface MainRepository<T extends Model, E extends Number> extends JpaRepository<T, E> {
 

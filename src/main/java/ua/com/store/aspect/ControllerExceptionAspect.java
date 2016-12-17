@@ -9,18 +9,21 @@ import org.springframework.stereotype.Component;
  * Класс реализует сквозную функциональность, а именно перехват исключений.
  * Помечен аннотациями @Aspect - аспект изменяет поведение остального кода, применяя совет в точках соединения.
  * Помечен аннотациями @Component указывает, что клас является компонентом фреймворка Spring.
+ *
+ * @author Максим Беседа
  */
 @Component
 @Aspect
 public class ControllerExceptionAspect {
-    /**
-     * Объект для логирования информации.
-     */
+
+    /** Объект для логирования информации. */
     private static Logger logger = Logger.getLogger(ControllerExceptionAspect.class);
 
     /**
      * Перехватывает исключения. Метод будет вызываться в случае появления исключительных
      * ситуаций, логирует информацию об исключении.
+     *
+     * @param exception Объект-исключение наследник класса Exception.
      */
     @AfterThrowing(pointcut = "execution(* ua.com.store..controller..*(..))", throwing = "exception")
     public void afterThrowingAdvice(Exception exception) {

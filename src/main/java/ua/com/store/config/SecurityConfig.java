@@ -15,49 +15,41 @@ import ua.com.store.service.RoleService;
  * Аннотация @EnableWebSecurity в связке с WebSecurityConfigurerAdapter классом работает над обеспечением
  * аутентификации. Помечен аннотацией @ComponentScan - указываем фреймворку Spring, что компоненты надо
  * искать внутри пакетов "ua.com.store.service" и "ua.com.store.dao".
+ *
+ * @author Максим Беседа
+ * @see UserDetailsService
+ * @see RoleService
+ * @see ua.com.store.model.User
+ * @see ua.com.store.model.Role
+ * @see SecurityInitializer
  */
 @Configuration
 @EnableWebSecurity
 @ComponentScan(basePackages = {"ua.com.store.service", "ua.com.store.dao", "ua.com.store.repository"})
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    /**
-     * Префикс URL запросов для администраторов.
-     */
+
+    /** Префикс URL запросов для администраторов. */
     private static final String ADMIN_REQUEST_URl = "/admin/**";
 
-    /**
-     * Префикс URL запросов для менеджеров.
-     */
+    /** Префикс URL запросов для менеджеров. */
     private static final String MANAGER_REQUEST_URl = "/managers/**";
 
-    /**
-     * URL запроса для авторизации.
-     */
+    /** URL запроса для авторизации. */
     private static final String LOGIN_URL = "/login";
 
-    /**
-     * Название импута username на странице авторизации.
-     */
+    /** Название импута username на странице авторизации. */
     private static final String USERNAME = "username";
 
-    /**
-     * Название импута password на странице авторизации.
-     */
+    /** Название импута password на странице авторизации. */
     private static final String PASSWORD = "password";
 
-    /**
-     * URL запроса при отказе в доступе при авторизации.
-     */
+    /** URL запроса при отказе в доступе при авторизации. */
     private static final String ACCESS_DENIED_PAGE = "/forbidden_exception";
 
-    /**
-     * Логин запасного аккаунта.
-     */
+    /** Логин запасного аккаунта. */
     private static final String DEFAULT_LOGIN = "root";
 
-    /**
-     * Пароль запасного аккаунта.
-     */
+    /** Пароль запасного аккаунта. */
     private static final String DEFAULT_PASSWORD = "1234";
 
     /**
@@ -80,6 +72,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      * на "{@value ADMIN_REQUEST_URl}", имеют доступ только пользователи с ролью - администратор.
      * К страницам, URL которых начинается на "{@value MANAGER_REQUEST_URl}", имеют доступ
      * администраторы и менеджера. Чтобы попасть на эти страницы, нужно пройти этап авторизации.
+     *
+     * @param httpSecurity Объект класса HttpSecurity для настройки прав доступа к страницам.
+     * @throws Exception Исключение методов класса HttpSecurity.
      */
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
@@ -105,6 +100,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      * Настройка пользователей с их ролями. Пользователи будут подгружатся с базы данных,
      * используя реализацию методов интерфейса UserDetailsService. Также в памяти сохраняется
      * запись об резервном пользоватети с правами администратора.
+     *
+     * @param builder Объект класса AuthenticationManagerBuilder.
+     * @throws Exception Исключение методов класса AuthenticationManagerBuilder.
      */
     @Override
     protected void configure(AuthenticationManagerBuilder builder) throws Exception {

@@ -10,6 +10,10 @@ import java.util.List;
 
 /**
  * Класс реализует методы интерфейса {@link ShoppingCartDao} для работы с корзиной.
+ *
+ * @author Максим Беседа
+ * @see ShoppingCartDao
+ * @see ShoppingCart
  */
 @Repository
 public class ShoppingCartDaoImpl implements ShoppingCartDao {
@@ -33,6 +37,8 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
 
     /**
      * Возвращает список всех торговых позиций в корзине.
+     *
+     * @return Объект типа {@link List} - список торговых позиций.
      */
     @Override
     public List<SalePosition> getSalePositions() {
@@ -41,6 +47,8 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
 
     /**
      * Добавляет торговую позицию в список корзины.
+     *
+     * @param salePosition Торговая позиция, которая будет добавлена в корзину.
      */
     @Override
     public void addSalePosition(SalePosition salePosition) {
@@ -49,6 +57,8 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
 
     /**
      * Удаляет торговую позицию из корзины.
+     *
+     * @param salePosition Торговая позиция для удаления из корзины.
      */
     @Override
     public void removeSalePosition(SalePosition salePosition) {
@@ -65,6 +75,8 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
 
     /**
      * Возвращает объект-корзину целиком.
+     *
+     * @return Объект класса {@link ShoppingCart} - корзина.
      */
     @Override
     public ShoppingCart get() {
@@ -73,6 +85,8 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
 
     /**
      * Возвращает размер корзины, то есть количество товаров в корзине.
+     *
+     * @return Значение типа int - количество товаров в корзине.
      */
     @Override
     public int getSize() {
@@ -81,6 +95,8 @@ public class ShoppingCartDaoImpl implements ShoppingCartDao {
 
     /**
      * Возвращает цену корзины - цена всех продаж.
+     *
+     * @return Значение типа double - цена корзины.
      */
     @Override
     public double getPrice() {
